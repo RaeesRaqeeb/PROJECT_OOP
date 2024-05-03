@@ -144,11 +144,13 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Space_invader_raylib\Graphics\crate.png" />
+    <Image Include="coin.gif" />
     <Image Include="enemy2.png" />
     <Image Include="enemy4.gif" />
     <Image Include="scarfy.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="coins.hpp" />
     <ClInclude Include="enemy.hpp" />
     <ClInclude Include="game_main.hpp" />
     <ClInclude Include="player.hpp" />

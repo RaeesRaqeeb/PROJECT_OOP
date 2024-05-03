@@ -55,13 +55,10 @@ void GAME::CheckForCollisions()
             Player_obj.playerRect.y = Player_obj.previousPosition.y;
             Player_obj.playerRect.x = Player_obj.previousPosition.x;
             Player_obj.IsplayerOnGround = true;
-            //Condition for not stay attached to tiles when jump from bottom
-         /*   if ((Player_obj.playerRect.y > Player_obj.platform1[i].y || Player_obj.playerRect.y > (Player_obj.platform1[i].y + Player_obj.platform1[i].height)))
-                Player_obj.IsplayerOnGround = false;
-            else
-                Player_obj.IsplayerOnGround = true;*/
+         
             Player_obj.jumpSpeed = 0.0f;
-            Player_obj.jump_count_index_in_air = 0;// Reset jump speed if collided
+            // Reset jump speed if collided
+            Player_obj.jump_count_index_in_air = 0;
         }
     }
 

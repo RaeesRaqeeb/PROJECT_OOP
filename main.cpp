@@ -17,6 +17,18 @@ int main() {
     raylib::Window window(screenWidth, screenHeight, "WINDOW");
 
     // ENEMY_TYPE1 B1;
+    //COins creations
+    int animFrames = 0;
+    
+    Image Coin_image= LoadImageAnim("coin.gif",&animFrames);
+    Coin_image.height = 20;
+    Coin_image.width = 20;
+    Texture2D Coin_image_Texture = LoadTextureFromImage(Coin_image);
+    unsigned int nextFrameDataOffset = 0;  // Current byte offset to next frame in image.data
+
+    int currentAnimFrame = 0;       // Current animation frame to load and draw
+    int frameDelay = 50;             // Frame delay to switch between animation frames
+    int frameCounter = 0;
 
     // B1.Draw();
      // Player properties
@@ -35,12 +47,31 @@ int main() {
 
     while (!window.ShouldClose())
     {
+        frameCounter++;
+        if (frameCounter >= frameDelay)
+        {
+            // Move to next frame
+            // NOTE: If final frame is reached we return to first frame
+            currentAnimFrame++;
+            if (currentAnimFrame >= animFrames) currentAnimFrame = 0;
+
+            // Get memory offset position for next frame data in image.data
+            nextFrameDataOffset = Coin_image.width * Coin_image.height * 4 * currentAnimFrame;
+
+            // Update GPU texture data with next frame image data
+            // WARNING: Data size (frame size) and pixel format must match already created texture
+            UpdateTexture(Coin_image_Texture, ((unsigned char*)Coin_image.data) + nextFrameDataOffset);
+
+            frameCounter = 0;
+        }
+
         
         Game_obj.HandleInput();
 
 
         ClearBackground(BLACK);
         BeginDrawing();
+        DrawTexture(Coin_image_Texture, 80, 940, WHITE);
         //   BeginMode2D(camera);
         Game_obj.Update();
         // Player movements control Complete code
@@ -83,7 +114,7 @@ int main() {
         // Check for player collision with stationary object
 //bool collision = CheckCollisionRecs(playerCollisionRect, obstacleRect);
 
-
+     //   DrawTextureV(Coin_image, { 400.0f,400.0f }, BLACK);
 
         endprogram = Game_obj.Draw();
         if (endprogram == true)

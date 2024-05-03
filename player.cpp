@@ -17,7 +17,7 @@ PLAYER::PLAYER()
     frameDelayCounter = 0;
     playerMoving = false;
     picture = LoadTexture("scarfy.png");
-    playerRect = { 0.0f, 0.0f, float(picture.width / 6), float(picture.height) };
+    playerRect = { 0.0f, 800.0f, float(picture.width / 6), float(picture.height) };
     playerCollisionRect = { playerRect.x, playerRect.y, playerRect.width, playerRect.height };
     
     
@@ -55,7 +55,10 @@ PLAYER::PLAYER()
     Tiles_Number[17] = { 1400,200,50.0f,20.0f };
     Tiles_Number[18] = { 1500,400,20.0f,20.0f };
     Tiles_Number[19] = { 1400,350,20.0f,20.0f };
+    Tiles_Number[20] = { 1300,700,320.0f,20.0f };
     
+    //LAST tiles
+    Tiles_Number[21] = { 1600,900,520.0f,20.0f };
 
 
     //Fake Tiles
@@ -76,6 +79,7 @@ PLAYER::PLAYER()
     Enemy_tiles[0]= { 550,950,100,10 };
     Enemy_tiles[1] = { 800,250,150.0f,10.0f };
     Enemy_tiles[2] = { 1300,500,150.0f,20.0f };
+    Enemy_tiles[3] = { 1600,600,220.0f,20.0f };
 
     //world related 
     ground_level = GetScreenHeight() - playerRect.height;
@@ -277,12 +281,14 @@ PLAYER::PLAYER()
         DrawRectangleRec(Tiles_Number[17], GREEN);
         DrawRectangleRec(Tiles_Number[18], GREEN);
         DrawRectangleRec(Tiles_Number[19], GREEN);
-        
+        DrawRectangleRec(Tiles_Number[20], GREEN);
+        DrawRectangleRec(Tiles_Number[21], GREEN);
 
         //Tile where enemy is walking
         DrawRectangleRec(Enemy_tiles[0], RED);
         DrawRectangleRec(Enemy_tiles[1], RED);
         DrawRectangleRec(Enemy_tiles[2], RED);
+        DrawRectangleRec(Enemy_tiles[3], RED);
 
         //fake tiles
         DrawRectangleRec(Fake_tiles[0], GREEN);
@@ -311,10 +317,6 @@ PLAYER::PLAYER()
     }
     
 
-    void PLAYER::TILES_DRAW()
-    {
-
-    }
 bool PLAYER::Player_collision_with_platform1s()
 {
     return CheckCollisionRecs(playerCollisionRect, Tiles_Number[0]) ||
@@ -326,10 +328,12 @@ bool PLAYER::Player_collision_with_platform1s()
         || CheckCollisionRecs(playerCollisionRect, Tiles_Number[12]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[13])||
         CheckCollisionRecs(playerCollisionRect, Tiles_Number[14])|| CheckCollisionRecs(playerCollisionRect, Tiles_Number[15]) ||
         CheckCollisionRecs(playerCollisionRect, Tiles_Number[16])|| CheckCollisionRecs(playerCollisionRect, Tiles_Number[17]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[18])
-       || CheckCollisionRecs(playerCollisionRect, Tiles_Number[19]) ||  CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[0]) ||
+       || CheckCollisionRecs(playerCollisionRect, Tiles_Number[19]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[20])|| CheckCollisionRecs(playerCollisionRect, Tiles_Number[21])
+        ||  CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[0]) ||
         CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[1])|| CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[2])||
         CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[3])|| CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[4])|| CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[5])
-            || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[0]) || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[1]) || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[2]);
+            || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[0]) || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[1]) 
+        || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[2])|| CheckCollisionRecs(playerCollisionRect, Enemy_tiles[3]);
   }
 void PLAYER::Update()
 {
