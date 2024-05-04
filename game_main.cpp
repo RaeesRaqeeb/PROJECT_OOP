@@ -4,6 +4,7 @@
 
 GAME::GAME()
 {
+   // Ptr_coin = new SMALL_COIN;
 	IsPlayerMoving = false;
 	InitGame();
 }
@@ -15,10 +16,11 @@ GAME::~GAME()
 
 bool GAME::Draw()
 {
-   
+      
         Player_obj.Draw(IsPlayerMoving);
-        Enemy_obj1.Draw();
-    
+       
+     
+      
         return playing;
 }
 
@@ -27,13 +29,15 @@ void GAME::Update()
 {
     if (playing)
     {//Enemy movement updates
-        Enemy_obj1.Update();
+       
+       // Enemy_obj1.Update();
     //Player updates
         Player_obj.Update();
-
-        Enemy_obj1.Enemy_movement();
-        CheckForCollisions();
+        
+     //   Enemy_obj1.Enemy_movement();
+       
     }
+    
 }
 
 void GAME::HandleInput()
@@ -41,13 +45,15 @@ void GAME::HandleInput()
 
 	if (lives != 0)
 	{
+         
 		Player_obj.Player_Movement();
 	}
 
 }
 
-void GAME::CheckForCollisions()
+void GAME::CheckForCollisions(Rectangle *Coin_position)
 {
+  
     for (int i = 0; i < 10; i++)
     {
         if (Player_obj.Player_collision_with_platform1s())
@@ -60,7 +66,9 @@ void GAME::CheckForCollisions()
             // Reset jump speed if collided
             Player_obj.jump_count_index_in_air = 0;
         }
+
     }
+
 
 
     ++frameDelayCounter;

@@ -1,11 +1,20 @@
 #include<raylib.h>
 #include<raylib-cpp.hpp>
+
+class Base
+{
+public:
+    void Draw();
+    void Update();
+
+};
 //Player class 
-class PLAYER {
+class PLAYER:public Base 
+{
 public:
     PLAYER();
     ~PLAYER();
-    Camera2D camera;
+   
     //Memebr variables or attributes for player
     Texture2D picture;
     Rectangle playerRect;
@@ -24,6 +33,8 @@ public:
     Texture2D picture2;
     Rectangle obstacleRect;
 
+    //coins
+ //   SMALL_COIN coins;
 
     //Enemy
     Texture2D enemy_picture;
@@ -85,3 +96,4 @@ private:
     // Private helper functions
     bool IsAlive() const { return player_health > 0; }
 };
+

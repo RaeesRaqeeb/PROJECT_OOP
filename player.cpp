@@ -6,6 +6,8 @@ PLAYER::PLAYER()
 {
     //Camera
     
+    //coins
+   
     //Player
     player_health = 3;
     jump_count_index_in_air = 0;
@@ -17,7 +19,7 @@ PLAYER::PLAYER()
     frameDelayCounter = 0;
     playerMoving = false;
     picture = LoadTexture("scarfy.png");
-    playerRect = { 0.0f, 800.0f, float(picture.width / 6), float(picture.height) };
+    playerRect = { 0.0f, 900.0f, float(picture.width / 6), float(picture.height) };
     playerCollisionRect = { playerRect.x, playerRect.y, playerRect.width, playerRect.height };
     
     
@@ -225,7 +227,8 @@ PLAYER::PLAYER()
 
     bool PLAYER::Draw(bool IsPlayerMoving)
     {
-
+        //coins
+      //  coins.Draw();
         DrawTextureRec(enemy_picture, { float(enemy_frame_index * enemy_rect.width), 0, float(enemy_rect.width), float(enemy_picture.height) }, { enemy_rect.x,enemy_rect.y }, WHITE);
       //  DrawTextureV(enemy_picture, { 200.0f,200.0f }, BLACK);
         DrawTextureRec(picture2, { 580, 350,float(picture2.width),(float)picture2.height },{580.0f,350.0f}, WHITE);
@@ -337,6 +340,8 @@ bool PLAYER::Player_collision_with_platform1s()
   }
 void PLAYER::Update()
 {
+    //coins update
+   // coins.Update();
  //Calculation for changing the frames
     ++frameDelayCounter;
     if (frameDelayCounter >= frameDelay)
@@ -385,5 +390,3 @@ Rectangle PLAYER::player_GetRect()
 {
     return playerRect;
 }
-
-

@@ -60,33 +60,4 @@
 //
 //
 
-void ENEMY_Type1::Enemy_movement()
-{
-    
-        if (enemy_rect.x <= GetScreenWidth() - enemy_rect.width)
-        {
-            enemy_rect.x += 0.1f;
-            if (enemy_rect.width > 0)
-            {
-                enemy_rect.width = -enemy_rect.width;
-            }
-        }
-        else if (enemy_rect.x >= 0)
-        {
-            if (enemy_rect.width < 0)
-            {
-                enemy_rect.width = -enemy_rect.width;
-            }
-            while (enemy_rect.x > 0.0f)
-            {
-                enemy_rect.x -= 1.0f;
-            }
 
-        }
-    
-}
-
-ENEMY::ENEMY()
-{
-
-}

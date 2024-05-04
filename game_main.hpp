@@ -1,6 +1,5 @@
 #pragma once
 #include"player.hpp"
-#include"enemy.hpp"
 
 class GAME
 {
@@ -22,18 +21,26 @@ public:
 	int enemy_frames;
 	int direction;
 	int enemy_frame_index;
+
+
+
+	//Coins
+	//BASE_COIN* Ptr_coin;
+
+	//Player
 	unsigned frameIndex;
 	unsigned numFrames;
 	unsigned frameDelay;
 	unsigned frameDelayCounter;
 	PLAYER Player_obj;
+	void CheckForCollisions(Rectangle *Coin_positions);
 
+	
 
 private:
 	
-	ENEMY_Type1 Enemy_obj1;
 	void MoveEnemy();
-	void CheckForCollisions();
+
 	void InitGame();
 	void CheckForHighscore();
 	void GameOver();

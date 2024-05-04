@@ -27,6 +27,9 @@
     <ClCompile Include="game_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="coins.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Space_invader_raylib\Graphics\crate.png">
@@ -56,6 +59,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="coins.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Base_class.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

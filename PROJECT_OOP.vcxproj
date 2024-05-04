@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="coins.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game_main.cpp" />
     <ClCompile Include="main.cpp" />
@@ -150,6 +151,7 @@
     <Image Include="scarfy.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Base_class.hpp" />
     <ClInclude Include="coins.hpp" />
     <ClInclude Include="enemy.hpp" />
     <ClInclude Include="game_main.hpp" />
