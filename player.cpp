@@ -19,7 +19,7 @@ PLAYER::PLAYER()
     frameDelayCounter = 0;
     playerMoving = false;
     picture = LoadTexture("scarfy.png");
-    playerRect = { 0.0f, 900.0f, float(picture.width / 6), float(picture.height) };
+    playerRect = { 1050, 100, float(picture.width / 6), float(picture.height) };
     playerCollisionRect = { playerRect.x, playerRect.y, playerRect.width, playerRect.height };
     
     
