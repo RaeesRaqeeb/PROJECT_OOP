@@ -35,16 +35,40 @@
     <Image Include="..\..\Space_invader_raylib\Graphics\crate.png">
       <Filter>Source Files</Filter>
     </Image>
-    <Image Include="enemy4.gif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="enemy2.png">
-      <Filter>Source Files</Filter>
-    </Image>
     <Image Include="scarfy.png">
       <Filter>Source Files</Filter>
     </Image>
     <Image Include="coin.gif">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="dragon.gif">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="ghost.gif">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="bat_left.gif">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="bat_right.gif">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="skilton_left.gif">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="skilton_right.gif">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="soldier_left.gif">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="soldier_right.gif">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="bat.png">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="skilton.png">
       <Filter>Source Files</Filter>
     </Image>
   </ItemGroup>
@@ -64,10 +88,5 @@
     <ClInclude Include="Base_class.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="enemy3.gif">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

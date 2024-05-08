@@ -4,14 +4,19 @@
 #include<iostream>
 //#include"enemy.hpp"
 
-
+int num = 0;
 
 class Base_class
 {
 public:
+   // virtual void Draw() = 0;
+    //virtual void Update() = 0;
+
 };
-class COIN
+class COIN:virtual public Base_class
 {
+
+    //In this try to use the attributes from the base class in the end
 public:
     COIN();
     ~COIN();
@@ -28,13 +33,16 @@ public:
     void Update();
     static int coin_counter;
     bool coinCollected[50];
+    GAME Game_obj;
+
+
 };
 
 int COIN::coin_counter = 0;
 COIN::COIN()
 {
     
-    for (int i = 0; i < 50; ++i)
+    for (int i = 0; i < 49; ++i)
     {
         coinCollected[i] = false;
     }
@@ -191,7 +199,7 @@ COIN::COIN()
     frameDelay = 50;
     frameCounter = 0;
 
-    for (int i = 0; i < 50;i++)
+    for (int i = 0; i < 49;i++)
     {
         Coin_Rect[i]={coins_positions[i].x,coins_positions[i].y,(float)Coin_image.width,(float)Coin_image.height };
     }
@@ -205,7 +213,7 @@ COIN::~COIN()
 
 void COIN::Draw()
 {
-    for (int i = 0; i < 50; ++i) 
+    for (int i = 0; i < 49; ++i) 
     {
         // Draw only if the coin has not been collected
         if (!coinCollected[i]) {
@@ -221,53 +229,268 @@ void COIN::Update()
     if (frameCounter >= frameDelay )
     {
         // Move to next frame
-        // NOTE: If final frame is reached we return to first frame
+        //If final frame is reached we return to first frame
         currentAnimFrame++;
         if (currentAnimFrame >= animFrames) currentAnimFrame = 0;
 
-        // Get memory offset position for next frame data in image.data
+       
         nextFrameDataOffset = Coin_image.width * Coin_image.height * 4 * currentAnimFrame;
 
-        // Update GPU texture data with next frame image data
-        // WARNING: Data size (frame size) and pixel format must match already created texture
      
-        for (int i = 0; i < 50; i++) 
+     
+        for (int i = 0; i < 49; i++) 
         {
             if(!coinCollected[i])
                 UpdateTexture(Coin_Texture[i], ((unsigned char*)Coin_image.data) + nextFrameDataOffset);
         }
         frameCounter = 0;
     }
+
 }
+
+
+class Enemy :public Base_class
+{
+public:
+     void Draw();
+     void Update();
+     void Collision();
+     void MoveMent();
+     PLAYER player_obj;
+    
+//protected:
+    Image Enemy_Image_left;
+    Image Enemy_Image_right;
+    Image current;
+    Image* Point_enemy;
+    Rectangle Enemy_rectangle[10];
+    Texture2D Enemy_texture_left[10];
+    Texture2D Enemy_texture_right[10];
+    Texture2D Current_Enemy_texure;
+    Vector2 Enemy_position[10];
+    unsigned int nextFrameDataOffset;
+    int animFrames;
+    int currentAnimFrame;
+    int frameDelay;
+    int frameCounter;
+    bool IsLeft;
+    bool IsRight;
+
+};
+
+class SKILTON_ENEMY :  public Enemy
+{
+public:
+ 
+    SKILTON_ENEMY();
+    ~SKILTON_ENEMY();
+    void Draw();
+    void Update();
+    void Collision();
+    void MoveMents();
+};
+
+
+SKILTON_ENEMY::SKILTON_ENEMY()
+{
+    IsLeft = true;
+    IsRight = false;
+    //Position of Skilton 
+    Point_enemy = &Enemy_Image_right;
+    Enemy_position[0].x = 580;
+    Enemy_position[0].y = 545;
+
+   //s int previous_position = 500;
+   
+    Enemy_rectangle[0].width = (float)Enemy_texture_left[0].width;
+    Enemy_rectangle[0].height =(float) Enemy_texture_left[0].height;
+
+    animFrames = 0;
+    currentAnimFrame = 0;
+    frameDelay = 100;
+    frameCounter = 0;
+    Enemy_Image_right = LoadImageAnim("skilton_right.gif",&animFrames);
+    Enemy_Image_left = LoadImageAnim("skilton_left.gif",&animFrames);
+
+    for (int i = 0; i < 10; i++)
+    {
+        Enemy_texture_left[i] = LoadTexture("skilton_left.gif");
+        Enemy_texture_right[i] = LoadTexture("skilton_right.gif");
+
+    }
+    Current_Enemy_texure = Enemy_texture_left[0];
+    for (int i = 0; i < 10; i++)
+
+        Enemy_rectangle[i] = { Enemy_position[i].x,Enemy_position[i].y,(float)Enemy_Image_right.width,(float)Enemy_Image_right.height };
+
+}
+
+SKILTON_ENEMY::~SKILTON_ENEMY()
+{
+}
+
+void SKILTON_ENEMY::Draw()
+{
+    for(int i=0;i<10;i++)
+        DrawTextureV(Current_Enemy_texure, Enemy_position[i], WHITE);
+   
+}
+
+
+void SKILTON_ENEMY::Update()
+{
+    frameCounter++;
+    if (frameCounter >= frameDelay)
+    {
+        // Move to next frame
+        //If final frame is reached we return to first frame
+        currentAnimFrame++;
+        if (currentAnimFrame >= animFrames) currentAnimFrame = 0;
+
+        nextFrameDataOffset = Enemy_Image_right.width * Enemy_Image_right.height * 4 * currentAnimFrame;
+
+        // Update texture based on direction of movement
+        if (IsLeft)
+            UpdateTexture(Current_Enemy_texure, ((unsigned char*)Enemy_Image_left.data) + nextFrameDataOffset);
+        else if (IsRight)
+            UpdateTexture(Current_Enemy_texure, ((unsigned char*)Enemy_Image_right.data) + nextFrameDataOffset);
+
+        frameCounter = 0;
+    }
+   
+  
+    
+   // Collision();
+}
+
+void SKILTON_ENEMY::Collision()
+{
+   
+}
+
+
+void SKILTON_ENEMY::MoveMents()
+{
+
+    
+    if (Enemy_position[0].x != 10 && IsLeft )
+    {
+        Enemy_position[0].x -= 0.1f;
+        
+            Current_Enemy_texure = Enemy_texture_left[0];
+       
+    }
+
+    if (Enemy_position[0].x <= 580 && IsRight)
+    {
+      
+        Enemy_position[0].x += 0.1f;
+        Current_Enemy_texure = Enemy_texture_right[0];
+    }
+
+    if (Enemy_position[0].x >= 580)
+    {
+        IsLeft = true;
+        IsRight = false;
+    }
+    if (Enemy_position[0].x <= 10)
+    {
+        IsRight = true;
+        IsLeft = false;
+    }
+
+    Enemy_rectangle[0].x = Enemy_position[0].x;
+    Enemy_rectangle[0].y = Enemy_position[0].y;
+}
+
+
+//For Dragon 
+
+class DRAGON_ENEMY : public Enemy
+{
+public:
+    DRAGON_ENEMY();
+    ~DRAGON_ENEMY();
+    void Draw();
+    void Update();
+    void Collision();
+    void MoveMent();
+};
+
+DRAGON_ENEMY::DRAGON_ENEMY()
+{
+    //Position of Dragons 
+
+    Enemy_position[0].x = 500;
+    Enemy_position[0].y = 500;
+
+    animFrames = 0;
+    currentAnimFrame = 0;
+    frameDelay = 100;
+    frameCounter = 0;
+    Enemy_Image_right = LoadImageAnim("dragon.gif", &animFrames);
+
+
+    for (int i = 0; i < 10; i++)
+      //  Enemy_texture[i] = LoadTextureFromImage(Enemy_Image_right);
+
+    for (int i = 0; i < 10; i++)
+        Enemy_rectangle[i] = { Enemy_position[i].x,Enemy_position[i].y,(float)Enemy_Image_right.width,(float)Enemy_Image_right.height };
+
+}
+
+DRAGON_ENEMY::~DRAGON_ENEMY()
+{
+}
+
+void DRAGON_ENEMY::Draw()
+{
+    for (int i = 0; i < 10; i++)
+    {
+      //  DrawTextureV(Enemy_texture[i], Enemy_position[i], WHITE);
+    }
+
+}
+
+void DRAGON_ENEMY::Update()
+{
+    frameCounter++;
+    if (frameCounter >= frameDelay)
+    {
+        // Move to next frame
+        //If final frame is reached we return to first frame
+        currentAnimFrame++;
+        if (currentAnimFrame >= animFrames) currentAnimFrame = 0;
+
+
+        nextFrameDataOffset = Enemy_Image_right.width * Enemy_Image_right.height * 4 * currentAnimFrame;
+
+
+
+        for (int i = 0; i < 10; i++)
+        {
+
+         //   UpdateTexture(Enemy_texture[i], ((unsigned char*)Enemy_Image_right.data) + nextFrameDataOffset);
+        }
+        frameCounter = 0;
+    }
+}
+
 
 int main() {
     const int screenWidth = GetScreenHeight();
     const int screenHeight = GetScreenWidth();
     
-    /* const float playerSpeed = 0.5f;
-     unsigned frameIndex = 0;
-     unsigned numFrames = 6;
-     unsigned frameDelay = 100;
-     unsigned frameDelayCounter = 0;
-     bool playerMoving = false;*/
+ 
     raylib::Window window(screenWidth, screenHeight, "WINDOW");
 
-    // ENEMY_TYPE1 B1;
-    
-    // B1.Draw();
-     // Player properties
-     //Texture2D picture = LoadTexture("scarfy.png");
-     //Rectangle playerRect(200.0f, 200.0f, float(picture.width / 6), float(picture.height));
-     //Rectangle playerCollisionRect = { playerRect.x, playerRect.y, playerRect.width, playerRect.height };
-     //Color playerColor = BLUE;
-
-     //// Stationary object properties
-     //Texture2D picture2 = LoadTexture("crate.png");
-     //Rectangle obstacleRect(100.0f, 100.0f, float(picture2.width), float(picture2.height));
+ 
 
     COIN Coin_obj;
 
     GAME Game_obj;
+
+    SKILTON_ENEMY Skilton_1;
     bool endprogram = false;
    
     
@@ -275,131 +498,50 @@ int main() {
     {
         
         Game_obj.HandleInput();
-       
+
 
         ClearBackground(BLACK);
         BeginDrawing();
     
-        //   BeginMode2D(camera);
+ 
         Game_obj.Update();
         Game_obj.CheckForCollisions(Coin_obj.Coin_Rect);
         Coin_obj.Update();
-        //if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Coin_obj.Coin_Rect[Coin_obj.currentAnimFrame]))
-        //{
-        //    for (int i = 0; i < 3; i++)
-        //    {
-        //       // if ((Game_obj.Player_obj.playerCollisionRect.x >= Coin_obj.coins_positions[i].x && Game_obj.Player_obj.playerCollisionRect.x <= Coin_obj.coins_positions[i].x+Coin_obj.Coin_Texture[i].width))
-        //        if((Game_obj.Player_obj.playerCollisionRect.x>=Coin_obj.Coin_Rect[i].x )||( Game_obj.Player_obj.playerCollisionRect.y >= Coin_obj.Coin_Rect[i].y) &&
-        //            (Game_obj.Player_obj.playerCollisionRect.x < Coin_obj.Coin_Rect[i].x +Coin_obj.Coin_Texture->width) || (Game_obj.Player_obj.playerCollisionRect.y < Coin_obj.Coin_Rect[i].y + Coin_obj.Coin_Rect->height))
-        //        {
-        //           std:: cout << "am i called\n";
-        //            UnloadTexture(Coin_obj.Coin_Texture[i]);
-        //            Coin_obj.Coin_Rect[i].x = 0;
-        //            Coin_obj.Coin_Rect[i].y = 0;
-        //            break;
-        //           
-
-        //        }
-        //    }
-        //    ++Coin_obj.coin_counter;
-        //}
-   /*     if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Coin_obj.Coin_Rect[Coin_obj.currentAnimFrame]))
-        {*/
-
-            for (int i = 0; i < 50; i++)
+        Skilton_1.Update();
+        Skilton_1.Draw();
+        Skilton_1.MoveMents();
+   
+       
+            for (int i = 0; i < 49; i++)
             {
-                if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Coin_obj.Coin_Rect[i]))
+                if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Coin_obj.Coin_Rect[i])) 
                 {
                     // Collision detected with coin
-                    std::cout << "Coin collected!\n";
+                    std::cout <<++num<< " :Coin collected!\n";
 
+                   //In the following lines in the loop, we are removing the frames and also the rectangle so when player stay their after collecting coin then the loop shouldn't run 
                     Coin_obj.Coin_Texture[i].height = 0;
                     Coin_obj.Coin_Texture[i].width = 0;
-
-                    // Unload texture and reset coin position
-                    UnloadTexture(Coin_obj.Coin_Texture[i]);
-                    
-                    // Increment coin counter
-                    ++Coin_obj.coin_counter;
+                    Coin_obj.Coin_Rect[i].height = 0;
+                    Coin_obj.Coin_Rect[i].width = 0;
+                    Coin_obj.Coin_Rect[i].y =0;
+                    Coin_obj.Coin_Rect[i].x = 0;
                     break;
+            
+                   
                 }
             }
-       // }
-    
-        // Player movements control Complete code
+            if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Skilton_1.Enemy_rectangle[0]))
+            {
+                Game_obj.Player_obj.playerRect.y = Game_obj.Player_obj.previousPosition.y;
+                Game_obj.Player_obj.playerRect.x = Game_obj.Player_obj.previousPosition.x;
+            }
+      
         
-      /*
-       Vector2 previousPosition;
-        previousPosition.x = playerRect.x;
-        previousPosition.y = playerRect.y;
-      if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_DOWN)) {
-            playerMoving = true;
-
-            if (IsKeyDown(KEY_RIGHT)) {
-                playerRect.x += playerSpeed;
-                if (playerRect.width < 0)
-                {
-                    playerRect.width = -playerRect.width;
-                }
-            }
-            if (IsKeyDown(KEY_LEFT)) {
-                playerRect.x -= playerSpeed;
-                if (playerRect.width > 0)
-                {
-                    playerRect.width = -playerRect.width;
-                }
-            }
-            if (IsKeyDown(KEY_UP)) {
-                playerRect.y -= playerSpeed;
-            }
-            if (IsKeyDown(key_down)) {
-                playerRect.y += playerSpeed;
-            }
-        }
-        else {
-            playerMoving = false;
-        }*/
-
-        // Update player collision rectangle
-      /*  playerCollisionRect.x = playerRect.x;
-        playerCollisionRect.y = playerRect.y;*/
-
-        // Check for player collision with stationary object
-//bool collision = CheckCollisionRecs(playerCollisionRect, obstacleRect);
-
-
-
         endprogram = Game_obj.Draw();
         if (endprogram == true)
             break;
         Coin_obj.Draw();
-        // Draw player
-       // DrawTextureRec(picture, { float(frameIndex * playerRect.width), 0, float(playerRect.width), float(picture.height) },
-           // { float(playerRect.x), float(playerRect.y) }, WHITE);
-
-        // Draw obstacle texture
-//DrawTexture(picture2, int(obstacleRect.x), int(obstacleRect.y), WHITE);
-
-        // Show collision status
-
-      /*  if (collision) {
-            playerRect.x = previousPosition.x;
-            playerRect.y = previousPosition.y;
-        }
-        else {
-            DrawText("No Collision", 10, 10, 20, BLACK);
-       } */
-
-      
-       // Update animation frame
-     /*  ++frameDelayCounter;
-       if (frameDelayCounter >= frameDelay) {
-           frameDelayCounter = 0;
-           if (playerMoving) {
-               ++frameIndex;
-               frameIndex %= numFrames;
-           }
-       }*/
        
         EndDrawing();
 
@@ -409,6 +551,13 @@ int main() {
 
     window.Close();
 
+    for (int i = 0; i < 50; i++)
+    {
+        UnloadTexture(Coin_obj.Coin_Texture[i]);
+    }
+
 
     return 0;
 }
+
+

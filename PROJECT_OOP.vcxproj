@@ -145,10 +145,18 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Space_invader_raylib\Graphics\crate.png" />
+    <Image Include="bat.png" />
+    <Image Include="bat_left.gif" />
+    <Image Include="bat_right.gif" />
     <Image Include="coin.gif" />
-    <Image Include="enemy2.png" />
-    <Image Include="enemy4.gif" />
+    <Image Include="dragon.gif" />
+    <Image Include="ghost.gif" />
     <Image Include="scarfy.png" />
+    <Image Include="skilton.png" />
+    <Image Include="skilton_left.gif" />
+    <Image Include="skilton_right.gif" />
+    <Image Include="soldier_left.gif" />
+    <Image Include="soldier_right.gif" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base_class.hpp" />
@@ -156,9 +164,6 @@
     <ClInclude Include="enemy.hpp" />
     <ClInclude Include="game_main.hpp" />
     <ClInclude Include="player.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="enemy3.gif" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

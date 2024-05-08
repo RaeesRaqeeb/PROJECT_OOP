@@ -15,11 +15,11 @@ PLAYER::PLAYER()
     IsplayerOnGround = true;
     frameIndex = 0;
     numFrames = 6;
-    frameDelay = 80;
+    frameDelay = 50;
     frameDelayCounter = 0;
     playerMoving = false;
     picture = LoadTexture("scarfy.png");
-    playerRect = { 1050, 100, float(picture.width / 6), float(picture.height) };
+    playerRect = { 0, 900, float(picture.width / 6), float(picture.height) };
     playerCollisionRect = { playerRect.x, playerRect.y, playerRect.width, playerRect.height };
     
     
@@ -365,7 +365,7 @@ void PLAYER::Enemy_movement()
 {
     if (enemy_rect.x <= GetScreenWidth()-enemy_rect.width)
     {
-        enemy_rect.x += 0.1f;
+        enemy_rect.x += 0.3f;
         if (enemy_rect.width > 0)
         {
             enemy_rect.width = -enemy_rect.width;
