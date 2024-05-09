@@ -146,8 +146,8 @@
   <ItemGroup>
     <Image Include="..\..\Space_invader_raylib\Graphics\crate.png" />
     <Image Include="bat.png" />
-    <Image Include="bat_left.gif" />
     <Image Include="bat_right.gif" />
+    <Image Include="bat_left.gif" />
     <Image Include="coin.gif" />
     <Image Include="dragon.gif" />
     <Image Include="ghost.gif" />

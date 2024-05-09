@@ -13,7 +13,7 @@ public:
     //virtual void Update() = 0;
 
 };
-class COIN:virtual public Base_class
+class COIN: public Base_class
 {
 
     //In this try to use the attributes from the base class in the end
@@ -208,6 +208,12 @@ COIN::COIN()
 
 COIN::~COIN()
 {
+    for (int i = 0; i < 49; i++)
+    {
+        UnloadTexture(Coin_Texture[i]);
+     
+    }
+    UnloadImage(Coin_image);
    
 }
 
@@ -282,7 +288,362 @@ public:
  
 
 };
+class BAT_ENEMY : public Enemy
+{
+public:
+    BAT_ENEMY();
+    ~BAT_ENEMY();
+    void Draw();
+    void Update();
+    void MoveMents();
+    void Reset();
+};
 
+
+//Bat Enemy Class
+BAT_ENEMY::BAT_ENEMY()
+{
+    for (int i = 0; i < 5; i++)
+        enemy_Not_died[i] = true;
+    for (int i = 0; i < 5; i++)
+    {
+        IsLeft[i] = true;
+        IsRight[i] = false;
+    }
+    //Position of Skilton 
+   // Point_enemy = &Enemy_Image_right
+    Enemy_position[0].x = 200;
+    Enemy_position[0].y = 80;
+
+    Enemy_position[1].x = 830;
+    Enemy_position[1].y = 90;
+
+    Enemy_position[2].x = GetScreenWidth()+100.0f;
+    Enemy_position[2].y =(float) GetScreenHeight()/2 -300.0f;
+    
+    Enemy_position[3].x = 0;
+    Enemy_position[3].y =(float) GetScreenHeight() / 2;
+
+
+    Enemy_position[4].x = (float)GetScreenWidth();
+    Enemy_position[4].y = 830 ;
+      /*
+      
+
+     
+
+      Enemy_position[4].x = 1800;
+      Enemy_position[4].y = 530;*/
+
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (enemy_Not_died[i])
+        {
+            Enemy_texture_left[i] = LoadTextureFromImage(Enemy_Image_left[i]);
+            Enemy_texture_right[i] = LoadTextureFromImage(Enemy_Image_right[i]);
+        }
+    }
+
+
+    //s int previous_position = 500;
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (enemy_Not_died[i])
+        {
+            Enemy_rectangle[i].width = (float)Enemy_texture_left[i].width;
+            Enemy_rectangle[i].height = (float)Enemy_texture_left[i].height;
+        }
+    }
+
+    animFrames = 0;
+    currentAnimFrame = 0;
+    frameDelay = 70;
+    frameCounter = 0;
+
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (enemy_Not_died[i])
+        {
+            Enemy_Image_right[i] = LoadImageAnim("bat_left.gif", &animFrames);
+            Enemy_Image_left[i] = LoadImageAnim("bat_right.gif", &animFrames);
+        }
+    }
+
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (enemy_Not_died[i])
+        {
+            Enemy_texture_left[i] = LoadTextureFromImage(Enemy_Image_left[i]);
+            Enemy_texture_right[i] = LoadTextureFromImage(Enemy_Image_right[i]);
+        }
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (enemy_Not_died[i])
+            Current_Enemy_texure[i] = Enemy_texture_left[i];
+
+    }
+
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (enemy_Not_died[i])
+            Enemy_rectangle[i] = { Enemy_position[i].x,Enemy_position[i].y,(float)Enemy_Image_right[i].width,(float)Enemy_Image_right[i].height };
+    }
+}
+
+BAT_ENEMY::~BAT_ENEMY()
+{
+    for (int i = 0; i < 5; i++)
+    {
+        UnloadImage(Enemy_Image_left[i]);
+        UnloadImage(Enemy_Image_right[i]);
+        UnloadTexture(Enemy_texture_left[i]);
+        UnloadTexture(Enemy_texture_right[i]);
+        UnloadTexture(Current_Enemy_texure[i]);
+    }
+
+}
+
+void BAT_ENEMY::Draw()
+{
+    for (int i = 0; i < 5; i++)
+    {
+        if (enemy_Not_died[i])
+        {
+            DrawTextureV(Current_Enemy_texure[i], Enemy_position[i], WHITE);
+        }
+    }
+}
+
+void BAT_ENEMY::Update()
+{
+
+    frameCounter++;
+    if (frameCounter >= frameDelay)
+    {
+        // Move to next frame
+        //If final frame is reached we return to first frame
+        currentAnimFrame++;
+        if (currentAnimFrame >= animFrames) currentAnimFrame = 0;
+        for (int i = 0; i < 5; i++)
+        {
+            nextFrameDataOffset[i] = Enemy_Image_right[i].width * Enemy_Image_right[i].height * 4 * currentAnimFrame;
+
+        }
+
+        frameCounter = 0;
+    }
+
+    
+    for (int i = 0; i < 5; i++)
+    {
+        // Update texture based on direction of movement
+        if (IsLeft[i])
+            UpdateTexture(Current_Enemy_texure[i], ((unsigned char*)Enemy_Image_left[i].data) + nextFrameDataOffset[i]);
+        else if (IsRight[i])
+            UpdateTexture(Current_Enemy_texure[i], ((unsigned char*)Enemy_Image_right[i].data) + nextFrameDataOffset[i]);
+
+    }
+}
+
+void BAT_ENEMY::MoveMents()
+{
+
+   
+    if (enemy_Not_died[0])
+    {
+        if (Enemy_position[0].x != 30 && IsLeft[0])
+        {
+            Enemy_position[0].x -= 0.1f;
+
+            Current_Enemy_texure[0] = Enemy_texture_left[0];
+
+        }
+
+        if (Enemy_position[0].x <= 300 && IsRight[0])
+        {
+
+            Enemy_position[0].x += 0.1f;
+            Current_Enemy_texure[0] = Enemy_texture_right[0];
+        }
+
+        if (Enemy_position[0].x >= 300)
+        {
+            IsLeft[0] = true;
+            IsRight[0] = false;
+        }
+        if (Enemy_position[0].x <= 30)
+        {
+            IsRight[0] = true;
+            IsLeft[0] = false;
+        }
+
+        Enemy_rectangle[0].x = Enemy_position[0].x;
+        Enemy_rectangle[0].y = Enemy_position[0].y;
+
+    }
+    if (enemy_Not_died[1])
+    {
+        if (Enemy_position[1].x > 750 && IsLeft[1])
+        {
+            Enemy_position[1].x -= 0.3f;
+
+            Current_Enemy_texure[1] = Enemy_texture_left[1];
+
+        }
+
+        if (Enemy_position[1].x < 980 && IsRight[1])
+        {
+
+            Enemy_position[1].x += 0.3f;
+            Current_Enemy_texure[1] = Enemy_texture_right[1];
+        }
+
+        if (Enemy_position[1].x >= 980)
+        {
+            IsLeft[1] = true;
+            IsRight[1] = false;
+        }
+        if (Enemy_position[1].x <= 750)
+        {
+            IsRight[1] = true;
+            IsLeft[1] = false;
+        }
+
+        Enemy_rectangle[1].x = Enemy_position[1].x;
+        Enemy_rectangle[1].y = Enemy_position[1].y;
+
+    }
+    
+    if (enemy_Not_died[2])
+    {
+        if (Enemy_position[2].x != 0 && IsLeft[2])
+        {
+            Enemy_position[2].x -= 1.5f;
+
+            Current_Enemy_texure[2] = Enemy_texture_left[2];
+
+        }
+
+        if (Enemy_position[2].x <= GetScreenWidth()+100.0f && IsRight[2])
+        {
+
+            Enemy_position[2].x += 1.5f;
+            Current_Enemy_texure[2] = Enemy_texture_right[2];
+        }
+
+        if (Enemy_position[2].x >= GetScreenWidth() + 100.0f)
+        {
+            IsLeft[2] = true;
+            IsRight[2] = false;
+        }
+        if (Enemy_position[2].x <= 0)
+        {
+            IsRight[2] = true;
+            IsLeft[2] = false;
+        }
+
+        Enemy_rectangle[2].x = Enemy_position[2].x;
+        Enemy_rectangle[2].y = Enemy_position[2].y;
+    }
+  
+    if (enemy_Not_died[3])
+    {
+        if (Enemy_position[3].x >= 0 && IsLeft[3])
+        {
+            Enemy_position[3].x -= 1.0f;
+
+            Current_Enemy_texure[3] = Enemy_texture_left[3];
+
+        }
+
+        if (Enemy_position[3].x <=GetScreenWidth() && IsRight[3])
+        {
+
+            Enemy_position[3].x += 1.0f;
+            Current_Enemy_texure[3] = Enemy_texture_right[3];
+        }
+
+        if (Enemy_position[3].x >= GetScreenWidth())
+        {
+            IsLeft[3] = true;
+            IsRight[3] = false;
+        }
+        if (Enemy_position[3].x <= 0)
+        {
+            IsRight[3] = true;
+            IsLeft[3] = false;
+        }
+
+        Enemy_rectangle[3].x = Enemy_position[3].x;
+        Enemy_rectangle[3].y = Enemy_position[3].y;
+
+    }
+
+    if (enemy_Not_died[4])
+    {
+        if (Enemy_position[4].x >= 0 && IsLeft[4])
+        {
+            Enemy_position[4].x -= 0.6f;
+
+            Current_Enemy_texure[4] = Enemy_texture_left[4];
+
+        }
+
+        if (Enemy_position[4].x <= GetScreenWidth() && IsRight[4])
+        {
+
+            Enemy_position[4].x += 0.6f;
+            Current_Enemy_texure[4] = Enemy_texture_right[4];
+        }
+
+        if (Enemy_position[4].x >= GetScreenWidth())
+        {
+            IsLeft[4] = true;
+            IsRight[4] = false;
+        }
+        if (Enemy_position[4].x <= 0)
+        {
+            IsRight[4] = true;
+            IsLeft[4] = false;
+        }
+
+        Enemy_rectangle[4].x = Enemy_position[4].x;
+        Enemy_rectangle[4].y = Enemy_position[4].y;
+
+    }
+
+
+
+}
+
+void BAT_ENEMY::Reset()
+{
+    for (int i = 0; i < 5; i++)
+    {
+        if (!enemy_Not_died[i])
+        {
+            UnloadTexture(Enemy_texture_left[i]);
+            UnloadTexture(Enemy_texture_right[i]);
+            Enemy_rectangle[i].x = 0;
+            Enemy_rectangle[i].y = 0;
+
+
+        }
+    }
+
+
+}
+
+
+
+//Skilton Class Code
 class SKILTON_ENEMY :  public Enemy
 {
 public:
@@ -296,7 +657,6 @@ public:
     void MoveMents();
     void Reset();
 };
-
 
 SKILTON_ENEMY::SKILTON_ENEMY()
 {
@@ -346,14 +706,6 @@ SKILTON_ENEMY::SKILTON_ENEMY()
     frameDelay = 70;
     frameCounter = 0;
    
-    /*    Enemy_Image_right[0] = LoadImageAnim("skilton_right.gif", &animFrames);
-        Enemy_Image_left[0] = LoadImageAnim("skilton_left.gif", &animFrames);
-
-        Enemy_Image_right[1] = LoadImageAnim("skilton_right.gif", &animFrames);
-        Enemy_Image_left[1] = LoadImageAnim("skilton_left.gif", &animFrames);
-
-        Enemy_Image_right[2] = LoadImageAnim("skilton_right.gif", &animFrames);
-        Enemy_Image_left[2] = LoadImageAnim("skilton_left.gif", &animFrames);*/
 
         for (int i = 0; i < 5; i++)
         {
@@ -374,9 +726,6 @@ SKILTON_ENEMY::SKILTON_ENEMY()
         Current_Enemy_texure[i] = Enemy_texture_left[i];
 
     }
-    /*Current_Enemy_texure[0] = Enemy_texture_left[0];
-    Current_Enemy_texure[1] = Enemy_texture_left[0];
-    Current_Enemy_texure[2] = Enemy_texture_left[0];*/
 
 
     for (int i = 0; i < 5; i++)
@@ -387,6 +736,15 @@ SKILTON_ENEMY::SKILTON_ENEMY()
 
 SKILTON_ENEMY::~SKILTON_ENEMY()
 {
+    for (int i = 0; i < 5; i++)
+    {
+        UnloadTexture(Enemy_texture_left[i]);
+        UnloadTexture(Enemy_texture_right[i]);
+        UnloadImage(Enemy_Image_left[i]);
+        UnloadImage(Enemy_Image_right[i]);
+
+
+    }
 
 }
 
@@ -401,7 +759,6 @@ void SKILTON_ENEMY::Draw()
         }
     }
 }
-
 
 void SKILTON_ENEMY::Update()
 {
@@ -437,11 +794,6 @@ void SKILTON_ENEMY::Update()
     }
 }
     
-   // Collision();
-
-
-
-
 void SKILTON_ENEMY::MoveMents()
 {
 
@@ -617,34 +969,28 @@ void SKILTON_ENEMY::Reset()
     {
         if (!enemy_Not_died[i])
         {
-            /* Enemy_rectangle[0].width = 0;
-              Enemy_rectangle[0].height = 0;*/
-
-              /*UnloadTexture(Current_Enemy_texure[i]);*/
             UnloadTexture(Enemy_texture_left[i]);
             UnloadTexture(Enemy_texture_right[i]);
             Enemy_rectangle[i].x = (float)GetScreenWidth() + 500;
             Enemy_rectangle[i].y = (float)GetScreenHeight() + 500;
-            //   UnloadImage(Enemy_Image_left[0]);
-             //  UnloadImage(Enemy_Image_right[0]);
+        
 
         }
     }
-    //if (!enemy_Not_died[1])
-    //{
-    //    UnloadTexture(Enemy_texture_left[1]);
-    //    UnloadTexture(Enemy_texture_right[1]);
-    //    Enemy_rectangle[1].x = (float)GetScreenWidth() + 500;
-    //    Enemy_rectangle[1].y = (float)GetScreenHeight() + 500;
-    //    //   UnloadImage(Enemy_Image_left[0]);
-    //  /*  UnloadImage(Enemy_Image_left[1]);
-    //    UnloadImage(Enemy_Image_right[1]);*/
-    //}
+
 
 }
 
 
-//For Dragon 
+//Skilton Class code END
+
+
+//************************************
+
+
+
+//**************************************
+//Dragon 
 
 class DRAGON_ENEMY : public Enemy
 {
@@ -732,6 +1078,7 @@ int main()
     GAME Game_obj;
 
     SKILTON_ENEMY Skilton_1;
+    BAT_ENEMY Bat_1;
     bool endprogram = false;
 
 
@@ -749,9 +1096,16 @@ int main()
         Coin_obj.Update();
         Coin_obj.Draw();
 
+        Bat_1.Update();
+        Bat_1.Draw();
+        Bat_1.MoveMents();
+
         Skilton_1.Update();
         Skilton_1.Draw();
         Skilton_1.MoveMents();
+
+    
+
 
         //Collision Detection Part
 
@@ -780,32 +1134,49 @@ int main()
         {
             if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Skilton_1.Enemy_rectangle[i]))
             {
-               
-                if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Skilton_1.Enemy_rectangle[i])) {
 
-                    // Get the difference in X and Y positions for collision direction
-                    float deltaX = abs(Game_obj.Player_obj.playerCollisionRect.x - Skilton_1.Enemy_rectangle[i].x);
-                    float deltaY = Game_obj.Player_obj.playerCollisionRect.y - Skilton_1.Enemy_rectangle[i].y;
 
-                    // Check for collision from any direction except bottom
-                    if (deltaY > 0.0f)
-                    { 
-                        if (deltaX < Game_obj.Player_obj.playerCollisionRect.width / 2.0f &&
-                            deltaY < Skilton_1.Enemy_rectangle[i].height / 2.0f) {
-                            // Player collided on top or slightly within enemy
-                            Skilton_1.enemy_Not_died[i] = false;
-                            Skilton_1.Reset(); 
-                        }
 
-                        else {
-                            // Check for standard left/right collisions (optional)
-                            Game_obj.Reset();
-                        }
-                    }
+                // Get the difference in X and Y positions for collision direction
+                float deltaX = abs(Game_obj.Player_obj.playerCollisionRect.x - Skilton_1.Enemy_rectangle[i].x);
+                float deltaY = Game_obj.Player_obj.playerCollisionRect.y - Skilton_1.Enemy_rectangle[i].y;
+
+                // Check for collision from any direction except bottom
+
+                if (deltaX < Game_obj.Player_obj.playerCollisionRect.width / 2.0f &&
+                    deltaY < Skilton_1.Enemy_rectangle[i].height / 2.0f) {
+                    // Player collided on top or slightly within enemy
+                    Skilton_1.enemy_Not_died[i] = false;
+                    Skilton_1.Reset();
                 }
 
+                else {
+                    // Check for standard left/right collisions (optional)
+                    Game_obj.Reset();
+                }
+                //d }
+
+
             }
-            
+            if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Bat_1.Enemy_rectangle[i]))
+            {
+                float deltaX = abs(Game_obj.Player_obj.playerCollisionRect.x - Bat_1.Enemy_rectangle[i].x);
+                float deltaY = Game_obj.Player_obj.playerCollisionRect.y - Bat_1.Enemy_rectangle[i].y;
+
+                // Check for collision from any direction except bottom
+
+                if (deltaX < Game_obj.Player_obj.playerCollisionRect.width / 2.0f &&
+                    deltaY < Bat_1.Enemy_rectangle[i].height / 2.0f) {
+                    // Player collided on top or slightly within enemy
+                    Bat_1.enemy_Not_died[i] = false;
+                    Bat_1.Reset();
+                }
+
+                else {
+                    // Check for standard left/right collisions (optional)
+                    Game_obj.Reset();
+                }
+            }
         }
             endprogram = Game_obj.Draw();
             if (endprogram == true)
@@ -820,11 +1191,7 @@ int main()
 
         window.Close();
 
-        for (int i = 0; i < 50; i++)
-        {
-            UnloadTexture(Coin_obj.Coin_Texture[i]);
-        }
-
+  
 
         return 0;
         

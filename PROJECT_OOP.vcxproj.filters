@@ -47,10 +47,10 @@
     <Image Include="ghost.gif">
       <Filter>Source Files</Filter>
     </Image>
-    <Image Include="bat_left.gif">
+    <Image Include="bat_right.gif">
       <Filter>Source Files</Filter>
     </Image>
-    <Image Include="bat_right.gif">
+    <Image Include="bat_left.gif">
       <Filter>Source Files</Filter>
     </Image>
     <Image Include="soldier_left.gif">
