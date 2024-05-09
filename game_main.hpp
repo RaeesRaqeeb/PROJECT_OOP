@@ -33,7 +33,8 @@ public:
 	unsigned frameDelay;
 	unsigned frameDelayCounter;
 	PLAYER Player_obj;
-	void CheckForCollisions(Rectangle *Coin_positions);
+	void CheckForCollisions();
+	void Reset();
 
 	
 
@@ -44,7 +45,7 @@ private:
 	void InitGame();
 	void CheckForHighscore();
 	void GameOver();
-	void Reset();
+	
 	void checkForHighscore();
 	void saveHighscoreToFile(int highscore);
 	int loadHighscoreFromFile();

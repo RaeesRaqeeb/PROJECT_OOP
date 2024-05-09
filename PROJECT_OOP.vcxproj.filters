@@ -53,12 +53,6 @@
     <Image Include="bat_right.gif">
       <Filter>Source Files</Filter>
     </Image>
-    <Image Include="skilton_left.gif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="skilton_right.gif">
-      <Filter>Source Files</Filter>
-    </Image>
     <Image Include="soldier_left.gif">
       <Filter>Source Files</Filter>
     </Image>
@@ -69,6 +63,12 @@
       <Filter>Source Files</Filter>
     </Image>
     <Image Include="skilton.png">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="skilton_left.gif">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="skilton_right.gif">
       <Filter>Source Files</Filter>
     </Image>
   </ItemGroup>

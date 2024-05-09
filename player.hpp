@@ -56,6 +56,7 @@ public:
     bool Draw(bool IsPlayerMoving);
     void TILES_DRAW();
     bool Player_collision_with_platform1s();
+    void reset();
     void Update();
     void Enemy_movement();
 

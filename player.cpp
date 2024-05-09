@@ -203,16 +203,10 @@ PLAYER::PLAYER()
                 IsplayerOnGround = true;
                 jump_count_index_in_air = 0;
                 jumpSpeed = 1.0f; // Reset jump speed
-                --player_health;
+           // --player_health;
                 //If player fall on the ground the player died and start again
                 UnloadTexture(picture);
-                if (player_health > 0)
-                {
-                    picture = LoadTexture("scarfy.png");
-                    DrawTextureRec(picture, playerRect, { 0.0f,850.0f }, BLACK);
-                    playerRect = { 0.0f, 850.0f, float(picture.width / 6) - 2, float(picture.height) };
-                    playerCollisionRect = { playerRect.x, playerRect.y, playerRect.width, playerRect.height };
-                }
+                reset();
 
 
             }
@@ -338,6 +332,18 @@ bool PLAYER::Player_collision_with_platform1s()
             || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[0]) || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[1]) 
         || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[2])|| CheckCollisionRecs(playerCollisionRect, Enemy_tiles[3]);
   }
+void PLAYER::reset()
+{
+    UnloadTexture(picture);
+    if (player_health > 0)
+    {
+        --player_health;
+        picture = LoadTexture("scarfy.png");
+        DrawTextureRec(picture, playerRect, { 0.0f,850.0f }, BLACK);
+        playerRect = { 0.0f, 850.0f, float(picture.width / 6) - 2, float(picture.height) };
+        playerCollisionRect = { playerRect.x, playerRect.y, playerRect.width, playerRect.height };
+    }
+}
 void PLAYER::Update()
 {
     //coins update

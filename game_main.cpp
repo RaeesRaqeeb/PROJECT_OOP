@@ -51,7 +51,7 @@ void GAME::HandleInput()
 
 }
 
-void GAME::CheckForCollisions(Rectangle *Coin_position)
+void GAME::CheckForCollisions()
 {
   
     for (int i = 0; i < 10; i++)
@@ -68,7 +68,6 @@ void GAME::CheckForCollisions(Rectangle *Coin_position)
         }
 
     }
-
 
 
     ++frameDelayCounter;
@@ -91,6 +90,7 @@ void GAME::CheckForCollisions(Rectangle *Coin_position)
 
 void GAME::Reset()
 {
+    Player_obj.reset();
 
 }
 
