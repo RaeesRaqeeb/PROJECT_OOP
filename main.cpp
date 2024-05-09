@@ -300,9 +300,9 @@ public:
 
 SKILTON_ENEMY::SKILTON_ENEMY()
 {
-    for(int i=0;i<2;i++)
+    for(int i=0;i<5;i++)
              enemy_Not_died[i] = true;
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 5; i++)
     {
         IsLeft[i] = true;
         IsRight[i] = false;
@@ -315,14 +315,30 @@ SKILTON_ENEMY::SKILTON_ENEMY()
     Enemy_position[1].x = 580;
     Enemy_position[1].y = 570;
 
+    Enemy_position[2].x = 830;
+    Enemy_position[2].y = 180;
+
+    Enemy_position[3].x = 1360;
+    Enemy_position[3].y = 430;
+
+    Enemy_position[4].x = 1800;
+    Enemy_position[4].y = 530;
+
+
+    for (int i = 0; i < 5; i++)
+    {
+        Enemy_texture_left[i] = LoadTextureFromImage(Enemy_Image_left[i]);
+        Enemy_texture_right[i] = LoadTextureFromImage(Enemy_Image_right[i]);
+
+    }
 
 
    //s int previous_position = 500;
    
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 5; i++)
     {
-        Enemy_rectangle[i].width = (float)Enemy_texture_left[i].width -50.0f ;
-        Enemy_rectangle[i].height = (float)Enemy_texture_left[i].height-50.f;
+        Enemy_rectangle[i].width = (float)Enemy_texture_left[i].width;
+        Enemy_rectangle[i].height = (float)Enemy_texture_left[i].height;
     }
 
     animFrames = 0;
@@ -330,24 +346,40 @@ SKILTON_ENEMY::SKILTON_ENEMY()
     frameDelay = 70;
     frameCounter = 0;
    
-        Enemy_Image_right[0] = LoadImageAnim("skilton_right.gif", &animFrames);
+    /*    Enemy_Image_right[0] = LoadImageAnim("skilton_right.gif", &animFrames);
         Enemy_Image_left[0] = LoadImageAnim("skilton_left.gif", &animFrames);
 
         Enemy_Image_right[1] = LoadImageAnim("skilton_right.gif", &animFrames);
         Enemy_Image_left[1] = LoadImageAnim("skilton_left.gif", &animFrames);
+
+        Enemy_Image_right[2] = LoadImageAnim("skilton_right.gif", &animFrames);
+        Enemy_Image_left[2] = LoadImageAnim("skilton_left.gif", &animFrames);*/
+
+        for (int i = 0; i < 5; i++)
+        {
+            Enemy_Image_right[i] = LoadImageAnim("skilton_right.gif", &animFrames);
+            Enemy_Image_left[i] = LoadImageAnim("skilton_left.gif", &animFrames);
+        }
     
 
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 5; i++)
     {
         Enemy_texture_left[i] = LoadTextureFromImage(Enemy_Image_left[i]);
         Enemy_texture_right[i] = LoadTextureFromImage(Enemy_Image_right[i]);
 
     }
 
-    Current_Enemy_texure[0] = Enemy_texture_left[0];
-    Current_Enemy_texure[1] = Enemy_texture_left[0];
+    for (int i = 0; i < 5; i++)
+    {
+        Current_Enemy_texure[i] = Enemy_texture_left[i];
 
-    for (int i = 0; i < 2; i++)
+    }
+    /*Current_Enemy_texure[0] = Enemy_texture_left[0];
+    Current_Enemy_texure[1] = Enemy_texture_left[0];
+    Current_Enemy_texure[2] = Enemy_texture_left[0];*/
+
+
+    for (int i = 0; i < 5; i++)
     {
         Enemy_rectangle[i] = { Enemy_position[i].x,Enemy_position[i].y,(float)Enemy_Image_right[i].width,(float)Enemy_Image_right[i].height};
     }
@@ -360,11 +392,11 @@ SKILTON_ENEMY::~SKILTON_ENEMY()
 
 void SKILTON_ENEMY::Draw()
 {
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 5; i++)
     {
         if (enemy_Not_died[i])
         {
-            for (int i = 0; i < 2; i++)
+          
                 DrawTextureV(Current_Enemy_texure[i], Enemy_position[i], WHITE);
         }
     }
@@ -381,14 +413,20 @@ void SKILTON_ENEMY::Update()
         //If final frame is reached we return to first frame
         currentAnimFrame++;
         if (currentAnimFrame >= animFrames) currentAnimFrame = 0;
-
-        nextFrameDataOffset[0] = Enemy_Image_right[0].width * Enemy_Image_right[0].height * 4 * currentAnimFrame;
+      /*  nextFrameDataOffset[0] = Enemy_Image_right[0].width * Enemy_Image_right[0].height * 4 * currentAnimFrame;
         nextFrameDataOffset[1] = Enemy_Image_right[1].width * Enemy_Image_right[1].height * 4 * currentAnimFrame;
+        nextFrameDataOffset[2] = Enemy_Image_right[2].width * Enemy_Image_right[2].height * 4 * currentAnimFrame;*/
+        for (int i = 0; i < 5; i++)
+        {
+            nextFrameDataOffset[i] = Enemy_Image_right[i].width * Enemy_Image_right[i].height * 4 * currentAnimFrame;
+
+        }
+
         frameCounter = 0;
     }
 
     //F
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 5; i++)
     {
                 // Update texture based on direction of movement
              if (IsLeft[i])
@@ -406,7 +444,39 @@ void SKILTON_ENEMY::Update()
 
 void SKILTON_ENEMY::MoveMents()
 {
-   
+
+    if (enemy_Not_died[4])
+    {
+        if (Enemy_position[4].x >= 1550 && IsLeft[4])
+        {
+            Enemy_position[4].x -= 0.1f;
+
+            Current_Enemy_texure[4] = Enemy_texture_left[4];
+
+        }
+
+        if (Enemy_position[4].x <= 1810 && IsRight[4])
+        {
+
+            Enemy_position[4].x += 0.1f;
+            Current_Enemy_texure[4] = Enemy_texture_right[4];
+        }
+
+        if (Enemy_position[4].x >= 1810)
+        {
+            IsLeft[4] = true;
+            IsRight[4] = false;
+        }
+        if (Enemy_position[4].x <= 1550)
+        {
+            IsRight[4] = true;
+            IsLeft[4] = false;
+        }
+
+        Enemy_rectangle[4].x = Enemy_position[4].x;
+        Enemy_rectangle[4].y = Enemy_position[4].y;
+
+    }
         if (enemy_Not_died[0])
         {
             if (Enemy_position[0].x != 490 && IsLeft[0])
@@ -470,12 +540,80 @@ void SKILTON_ENEMY::MoveMents()
             Enemy_rectangle[1].x = Enemy_position[1].x;
             Enemy_rectangle[1].y = Enemy_position[1].y;
         }
+        if (enemy_Not_died[2])
+        {
+            if (Enemy_position[2].x > 750 && IsLeft[2])
+            {
+                Enemy_position[2].x -= 0.1f;
+
+                Current_Enemy_texure[2] = Enemy_texture_left[2];
+
+            }
+
+            if (Enemy_position[2].x < 880 && IsRight[2])
+            {
+
+                Enemy_position[2].x += 0.1f;
+                Current_Enemy_texure[2] = Enemy_texture_right[2];
+            }
+
+            if (Enemy_position[2].x >= 880)
+            {
+                IsLeft[2] = true;
+                IsRight[2] = false;
+            }
+            if (Enemy_position[2].x <= 750)
+            {
+                IsRight[2] = true;
+                IsLeft[2] = false;
+            }
+
+            Enemy_rectangle[2].x = Enemy_position[2].x;
+            Enemy_rectangle[2].y = Enemy_position[2].y;
+           
+        }
+        if (enemy_Not_died[3])
+        {
+            if (Enemy_position[3].x >= 1260 && IsLeft[3])
+            {
+                Enemy_position[3].x -= 0.1f;
+
+                Current_Enemy_texure[3] = Enemy_texture_left[3];
+
+            }
+
+            if (Enemy_position[3].x <= 1390 && IsRight[3])
+            {
+
+                Enemy_position[3].x += 0.1f;
+                Current_Enemy_texure[3] = Enemy_texture_right[3];
+            }
+
+            if (Enemy_position[3].x >= 1390)
+            {
+                IsLeft[3] = true;
+                IsRight[3] = false;
+            }
+            if (Enemy_position[3].x <= 1260)
+            {
+                IsRight[3] = true;
+                IsLeft[3] = false;
+            }
+
+            Enemy_rectangle[3].x = Enemy_position[3].x;
+            Enemy_rectangle[3].y = Enemy_position[3].y;
+           
+        }
+       
+
+
+
 
 }
 
 void SKILTON_ENEMY::Reset()
 {
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 5; i++)
     {
         if (!enemy_Not_died[i])
         {
@@ -638,27 +776,36 @@ int main()
         }
 
         //Collision of Player with Skilton
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 5; i++)
         {
             if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Skilton_1.Enemy_rectangle[i]))
             {
-                //Fall on the player from little back
-                if ((Game_obj.Player_obj.playerRect.y + Game_obj.Player_obj.playerRect.height) >= Skilton_1.Enemy_rectangle[i].y &&
-                    Game_obj.Player_obj.playerRect.y <= (Skilton_1.Enemy_rectangle[i].y + Skilton_1.Enemy_rectangle[i].height) &&
-                    (Game_obj.Player_obj.playerRect.x + Game_obj.Player_obj.playerRect.width) > Skilton_1.Enemy_rectangle[i].x &&
-                    Game_obj.Player_obj.playerRect.x <= (Skilton_1.Enemy_rectangle[i].x + Skilton_1.Enemy_rectangle[i].width))
-                {
-                    // Collision detected
-                    Skilton_1.enemy_Not_died[i] = false;
-                    Skilton_1.Reset();
-                }
-                else
-                {
-                    Game_obj.Reset();
-                    // No collision
+               
+                if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Skilton_1.Enemy_rectangle[i])) {
+
+                    // Get the difference in X and Y positions for collision direction
+                    float deltaX = abs(Game_obj.Player_obj.playerCollisionRect.x - Skilton_1.Enemy_rectangle[i].x);
+                    float deltaY = Game_obj.Player_obj.playerCollisionRect.y - Skilton_1.Enemy_rectangle[i].y;
+
+                    // Check for collision from any direction except bottom
+                    if (deltaY > 0.0f)
+                    { 
+                        if (deltaX < Game_obj.Player_obj.playerCollisionRect.width / 2.0f &&
+                            deltaY < Skilton_1.Enemy_rectangle[i].height / 2.0f) {
+                            // Player collided on top or slightly within enemy
+                            Skilton_1.enemy_Not_died[i] = false;
+                            Skilton_1.Reset(); 
+                        }
+
+                        else {
+                            // Check for standard left/right collisions (optional)
+                            Game_obj.Reset();
+                        }
+                    }
                 }
 
             }
+            
         }
             endprogram = Game_obj.Draw();
             if (endprogram == true)
