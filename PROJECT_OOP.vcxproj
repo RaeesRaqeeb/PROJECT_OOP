@@ -143,30 +143,6 @@
     <ClCompile Include="player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\Space_invader_raylib\Graphics\crate.png" />
-    <Image Include="bat.png" />
-    <Image Include="bat_right.gif" />
-    <Image Include="bat_left.gif" />
-    <Image Include="but.jpg" />
-    <Image Include="button.png" />
-    <Image Include="coin.gif" />
-    <Image Include="dragon.gif" />
-    <Image Include="ghost.gif" />
-    <Image Include="lives.png" />
-    <Image Include="scarfy.png" />
-    <Image Include="skilton.png" />
-    <Image Include="skilton_left.gif" />
-    <Image Include="skilton_right.gif" />
-    <Image Include="soldier_left.gif" />
-    <Image Include="soldier_right.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Base_class.hpp" />
-    <ClInclude Include="coins.hpp" />
-    <ClInclude Include="game_main.hpp" />
-    <ClInclude Include="player.hpp" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="High_score.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +155,22 @@
     <Media Include="Sounds\Player_hit.mp3" />
     <Media Include="Sounds\player_walking.mp3" />
     <Media Include="Sounds\when_landing_from_jump.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header_Files\Base_class.hpp" />
+    <ClInclude Include="Header_Files\coins.hpp" />
+    <ClInclude Include="Header_Files\game_main.hpp" />
+    <ClInclude Include="Header_Files\player.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Pictures\bat_left.gif" />
+    <Image Include="Pictures\bat_right.gif" />
+    <Image Include="Pictures\button.png" />
+    <Image Include="Pictures\coin.gif" />
+    <Image Include="Pictures\lives.png" />
+    <Image Include="Pictures\scarfy.png" />
+    <Image Include="Pictures\skilton_left.gif" />
+    <Image Include="Pictures\skilton_right.gif" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,9 +12,12 @@
     <Filter Include="Sounds">
       <UniqueIdentifier>{11b70a12-c6a3-4fc1-b4f5-5de73020f899}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header_Files">
+    <Filter Include="Header_files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Pictures">
+      <UniqueIdentifier>{96d37cbc-d19c-46dc-be3c-a38089c007e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,70 +33,6 @@
     <ClCompile Include="coins.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\Space_invader_raylib\Graphics\crate.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="scarfy.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="coin.gif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="dragon.gif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="ghost.gif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="bat_right.gif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="bat_left.gif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="soldier_left.gif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="soldier_right.gif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="bat.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="skilton.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="skilton_left.gif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="skilton_right.gif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="lives.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="but.jpg">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="button.png">
-      <Filter>Source Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="player.hpp">
-      <Filter>Header_Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game_main.hpp">
-      <Filter>Header_Files</Filter>
-    </ClInclude>
-    <ClInclude Include="coins.hpp">
-      <Filter>Header_Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Base_class.hpp">
-      <Filter>Header_Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="High_score.txt">
@@ -128,5 +67,45 @@
     <Media Include="Sounds\Game_music.mp3">
       <Filter>Sounds</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header_Files\Base_class.hpp">
+      <Filter>Header_files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header_Files\coins.hpp">
+      <Filter>Header_files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header_Files\game_main.hpp">
+      <Filter>Header_files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header_Files\player.hpp">
+      <Filter>Header_files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Pictures\bat_left.gif">
+      <Filter>Pictures</Filter>
+    </Image>
+    <Image Include="Pictures\bat_right.gif">
+      <Filter>Pictures</Filter>
+    </Image>
+    <Image Include="Pictures\button.png">
+      <Filter>Pictures</Filter>
+    </Image>
+    <Image Include="Pictures\coin.gif">
+      <Filter>Pictures</Filter>
+    </Image>
+    <Image Include="Pictures\lives.png">
+      <Filter>Pictures</Filter>
+    </Image>
+    <Image Include="Pictures\skilton_left.gif">
+      <Filter>Pictures</Filter>
+    </Image>
+    <Image Include="Pictures\skilton_right.gif">
+      <Filter>Pictures</Filter>
+    </Image>
+    <Image Include="Pictures\scarfy.png">
+      <Filter>Pictures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

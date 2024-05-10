@@ -1,4 +1,4 @@
-#include "player.hpp"
+#include "Header_files/player.hpp"
 #include<time.h>
 #include<iostream>
 
@@ -16,7 +16,7 @@ PLAYER::PLAYER()
     }
     //lives
     for(int i=0;i<3;i++)
-      lives[i] = LoadTexture("lives.png");
+      lives[i] = LoadTexture("Pictures/lives.png");
     
     positions[0].x = 1030.0f;
     positions[0].y = GetScreenHeight()-100.0f;
@@ -38,7 +38,7 @@ PLAYER::PLAYER()
     frameDelay = 50;
     frameDelayCounter = 0;
     playerMoving = false;
-    picture = LoadTexture("scarfy.png");
+    picture = LoadTexture("Pictures/scarfy.png");
     playerRect = { 0, 900, float(picture.width / 6), float(picture.height) };
     playerCollisionRect = { playerRect.x, playerRect.y, playerRect.width, playerRect.height };
     

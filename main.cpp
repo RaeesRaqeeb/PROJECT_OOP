@@ -1,6 +1,6 @@
 #include <raylib-cpp.hpp>
 #include <raylib.h>
-#include"game_main.hpp"
+#include"Header_files/game_main.hpp"
 #include<iostream>
 #include<string>
 #include<raygui.h>
@@ -106,7 +106,7 @@ COIN::COIN()
     {
         coinCollected[i] = false;
     }
-    Coin_image = LoadImageAnim("coin.gif", &animFrames);
+    Coin_image = LoadImageAnim("Pictures/coin.gif", &animFrames);
     for(int i=0;i<50;i++)
              Coin_Texture[i] = LoadTextureFromImage(Coin_image);
 
@@ -427,8 +427,8 @@ BAT_ENEMY::BAT_ENEMY()
     {
         if (enemy_Not_died[i])
         {
-            Enemy_Image_right[i] = LoadImageAnim("bat_left.gif", &animFrames);
-            Enemy_Image_left[i] = LoadImageAnim("bat_right.gif", &animFrames);
+            Enemy_Image_right[i] = LoadImageAnim("Pictures/bat_left.gif", &animFrames);
+            Enemy_Image_left[i] = LoadImageAnim("Pictures/bat_right.gif", &animFrames);
         }
     }
 
@@ -769,8 +769,8 @@ SKILTON_ENEMY::SKILTON_ENEMY()
 
         for (int i = 0; i < 5; i++)
         {
-            Enemy_Image_right[i] = LoadImageAnim("skilton_right.gif", &animFrames);
-            Enemy_Image_left[i] = LoadImageAnim("skilton_left.gif", &animFrames);
+            Enemy_Image_right[i] = LoadImageAnim("Pictures/skilton_right.gif", &animFrames);
+            Enemy_Image_left[i] = LoadImageAnim("Pictures/skilton_left.gif", &animFrames);
         }
     
 
@@ -1057,7 +1057,7 @@ int main()
     raylib::Window window(screenWidth, screenHeight, "WINDOW");
    
    // Load button sound
-    Texture2D button = LoadTexture("button.png"); // Load button texture
+    Texture2D button = LoadTexture("Pictures/button.png"); // Load button texture
 
     InitAudioDevice();
     Sound Coins_collected = LoadSound("Sounds/coins_collection.wav");

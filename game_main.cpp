@@ -1,5 +1,4 @@
-#include "game_main.hpp"
-#include"enemy.hpp"
+#include "Header_files/game_main.hpp"
 #include<fstream>
 
 GAME::GAME()
