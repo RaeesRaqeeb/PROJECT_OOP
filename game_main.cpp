@@ -6,6 +6,7 @@ GAME::GAME()
 {
    // Ptr_coin = new SMALL_COIN;
 	IsPlayerMoving = false;
+ 
 	InitGame();
 }
 
@@ -100,6 +101,12 @@ void GAME::Reset()
 
 
 
+
+void GAME::sounds()
+{
+    
+
+}
 
 void GAME::InitGame()
 {

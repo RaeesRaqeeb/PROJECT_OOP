@@ -3,6 +3,7 @@
 #include"game_main.hpp"
 #include<iostream>
 #include<string>
+#include<raygui.h>
 //#include"enemy.hpp"
 
 
@@ -1044,82 +1045,8 @@ void SKILTON_ENEMY::Reset()
 //Skilton Class code END
 
 
-//************************************
 
 
-
-//**************************************
-//Dragon 
-
-class DRAGON_ENEMY : public Enemy
-{
-public:
-    DRAGON_ENEMY();
-    ~DRAGON_ENEMY();
-    void Draw();
-    void Update();
-    void Collision();
-    void MoveMent();
-};
-
-DRAGON_ENEMY::DRAGON_ENEMY()
-{
-    //Position of Dragons 
-
-    Enemy_position[0].x = 500;
-    Enemy_position[0].y = 500;
-
-    animFrames = 0;
-    currentAnimFrame = 0;
-    frameDelay = 100;
-    frameCounter = 0;
-    Enemy_Image_right [0] = LoadImageAnim("dragon.gif", &animFrames);
-
-
-    for (int i = 0; i < 10; i++)
-      //  Enemy_texture[i] = LoadTextureFromImage(Enemy_Image_right);
-
-    for (int i = 0; i < 10; i++)
-        Enemy_rectangle[i] = { Enemy_position[i].x,Enemy_position[i].y,(float)Enemy_Image_right[i].width,(float)Enemy_Image_right[i].height};
-
-}
-
-DRAGON_ENEMY::~DRAGON_ENEMY()
-{
-}
-
-void DRAGON_ENEMY::Draw()
-{
-    for (int i = 0; i < 10; i++)
-    {
-      //  DrawTextureV(Enemy_texture[i], Enemy_position[i], WHITE);
-    }
-
-}
-
-void DRAGON_ENEMY::Update()
-{
-   
-
-
-        for (int i = 0; i < 10; i++)
-        {
-            frameCounter++;
-            if (frameCounter >= frameDelay)
-            {
-                // Move to next frame
-                //If final frame is reached we return to first frame
-                currentAnimFrame++;
-                if (currentAnimFrame >= animFrames) currentAnimFrame = 0;
-
-
-                nextFrameDataOffset [i] = Enemy_Image_right[i].width * Enemy_Image_right[i].height * 4 * currentAnimFrame;
-
-         //   UpdateTexture(Enemy_texture[i], ((unsigned char*)Enemy_Image_right.data) + nextFrameDataOffset);
-        }
-        frameCounter = 0;
-    }
-}
 
 
 int main()
@@ -1129,7 +1056,28 @@ int main()
     const int screenHeight = GetScreenWidth();
     raylib::Window window(screenWidth, screenHeight, "WINDOW");
    
+   // Load button sound
+    Texture2D button = LoadTexture("button.png"); // Load button texture
+
+    InitAudioDevice();
+    Sound Coins_collected = LoadSound("Sounds/coins_collection.wav");
+    Sound Kill_by_enemy = LoadSound("Sounds/kill_by_enemy.mp3");
+    Sound sound_list = LoadSound("Sounds/player_walking.wav");
+    Sound Player_hit = LoadSound("Sounds/Player_hit.mp3");
+    Sound Game_over = LoadSound("Sounds/Game_over.mp3");
+    Music Game_music = LoadMusicStream("Sounds/Game_music.mp3");
+
+    // Define frame rectangle for drawing
+    float frameHeight = (float)button.height;
+    Rectangle sourceRec = { (float)GetScreenWidth() / 2 - 100,(float) GetScreenHeight() / 2 - 100, (float)button.width, frameHeight };
+
+    // Define button bounds on screen
+   // Rectangle btnBounds = { (float)GetScreenWidth() / 2 - 200, (float)GetScreenHeight() / 2 - 200, (float)button.width, frameHeight };
+
+    int btnState = 0;               // Button state: 0-NORMAL, 1-MOUSE_HOVER, 2-PRESSED
+    bool btnAction = false;         // Button action should be activated
  
+    Vector2 mousePoint = { 0.0f, 0.0f };
 
     COIN Coin_obj;
     GAME Game_obj;
@@ -1139,34 +1087,66 @@ int main()
     bool endprogram = false;
    
     bool paused = false;
-
+    mousePoint = GetMousePosition();
+    bool Start = false;
+    SetSoundVolume(Kill_by_enemy, 2.0f);
+    SetMusicVolume(Game_music, 0.5f);
     while (!window.ShouldClose())
     {
+       
+        mousePoint = GetMousePosition();
+
+        // Check button state
+        if (!btnAction)
+        {
+            if (CheckCollisionPointRec(mousePoint, sourceRec))
+            {
+
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+                    btnAction = true;
+                    UnloadTexture(button);
+                    sourceRec.x = 0;
+                    sourceRec.y = 0;
+                }
+            }
+
+        }
+  
+
+        // Calculate button frame rectangle to draw depending on button state
+
         if (IsKeyPressed(KEY_P))
             paused = !paused;
-       
-        if (!paused)
+
+        if (btnAction)
         {
-            Game_obj.HandleInput();
+
+            if (!paused)
+            {
+                UpdateMusicStream(Game_music);
+                PlayMusicStream(Game_music);
+
+                Game_obj.HandleInput();
 
 
-            ClearBackground(BLACK);
+                ClearBackground(BLACK);
 
-            Game_obj.Update();
-            Game_obj.CheckForCollisions();
-            Coin_obj.Update();
+                Game_obj.Update();
+                Game_obj.CheckForCollisions();
+                Coin_obj.Update();
 
 
-            Bat_1.Update();
+                Bat_1.Update();
 
-            Bat_1.MoveMents();
+                Bat_1.MoveMents();
 
-            Skilton_1.Update();
+                Skilton_1.Update();
 
-            Skilton_1.MoveMents();
+                Skilton_1.MoveMents();
+            }
         }
         BeginDrawing();
-    
+      
         Coin_obj.Draw();
         Bat_1.Draw();
         Skilton_1.Draw();
@@ -1179,6 +1159,7 @@ int main()
             {
                 // Collision detected with coin
                 //In the following lines in the loop, we are removing the frames and also the rectangle so when player stay their after collecting coin then the loop shouldn't run 
+                PlaySound(Coins_collected);
                 Score += 50;
                 Check_for_high_score();
                 Coin_obj.Coin_Texture[i].height = 0;
@@ -1200,6 +1181,7 @@ int main()
             {
 
                 // Get the difference in X and Y positions for collision direction
+                
                 float deltaX = abs(Game_obj.Player_obj.playerCollisionRect.x - Skilton_1.Enemy_rectangle[i].x);
                 float deltaY = Game_obj.Player_obj.playerCollisionRect.y - Skilton_1.Enemy_rectangle[i].y;
 
@@ -1209,6 +1191,7 @@ int main()
                     deltaY < Skilton_1.Enemy_rectangle[i].height / 2.0f) {
                     // Player collided on top or slightly within enemy
                     Score += 100;
+                    PlaySound(Player_hit);
                     Check_for_high_score();
 
                     Skilton_1.enemy_Not_died[i] = false;
@@ -1216,6 +1199,7 @@ int main()
                 }
 
                 else {
+                    PlaySound(Kill_by_enemy);
                     // Check for standard left/right collisions (optional)
                     Game_obj.Reset();
                 }
@@ -1232,6 +1216,8 @@ int main()
 
                 if (deltaX < Game_obj.Player_obj.playerCollisionRect.width / 2.0f &&
                     deltaY < Bat_1.Enemy_rectangle[i].height / 2.0f) {
+                    PlaySound(Player_hit);
+
                     // Player collided on top or slightly within enemy
                     if (i == 0 || i == 1)
                     {
@@ -1257,16 +1243,21 @@ int main()
                 }
 
                 else {
-                    // Check for standard left/right collisions (optional)
+                    PlaySound(Kill_by_enemy);
+                
                     Game_obj.Reset();
                 }
             }
         }
+
             endprogram = Game_obj.Draw();
-          /*  if (endprogram == true)
-                break;*/
+            if (endprogram)
+            {
+                PlaySound(Game_over);
 
+           }
 
+            //Scoring diplay
             DrawTextEx(GetFontDefault(), "SCORE: ", { 1200,1000 }, 34, 2, YELLOW);
             string Score_text = Formating_score(Score,5);
             DrawTextEx(GetFontDefault(), Score_text.c_str(), { 1340,1000 }, 34, 2, YELLOW);
@@ -1277,12 +1268,18 @@ int main()
 
             if(paused)
                DrawText("PAUSED", GetScreenWidth() / 2, GetScreenHeight() / 2, 100, RED);
+
+            if (!btnAction)
+            {
+                DrawRectangle(GetScreenWidth() / 2 - 200, GetScreenHeight() / 2 - 200, 500, 600, WHITE);
+                DrawTexture(button, GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 100, WHITE);
+            }
             EndDrawing();
 
         }
-    
+      
         // Unload textures
-
+        CloseAudioDevice();
         window.Close();
 
   

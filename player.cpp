@@ -4,6 +4,19 @@
 
 PLAYER::PLAYER()
 {
+    //SOunds
+    Player_walking[0] = LoadSound("Sounds/player_walking.mp3");
+    Player_falling = LoadSound("Sounds/player_fall_down.mp3");
+    Game_over = LoadSound("Sounds/Game_over.mp3");
+    //Current_sound[1] = LoadSound("Sounds/kill_by_enemy.mp3");
+    //Current_sound[2] = LoadSound("Sounds/player_fall_down.mp3");
+    //Current_sound[3] = LoadSound("Sounds/when_landing_from_jump.mp3");
+    //Current_sound[4] = LoadSound("Sounds/Game_over.mp3");
+    running_sound = 0;
+    for (int i = 0; i < 50; i++)
+    {
+        Player_walking[i] = LoadSoundAlias(Player_walking[0]);
+    }
     //lives
     for(int i=0;i<3;i++)
       lives[i] = LoadTexture("lives.png");
@@ -129,6 +142,13 @@ PLAYER::PLAYER()
             {
                 if (playerRect.x < GetScreenWidth() - 85)
                     playerRect.x += playerSpeed;
+                //Sound system
+                if(IsKeyPressed(KEY_RIGHT))
+                    PlaySound(Player_walking[running_sound]);
+                running_sound++;
+                if (running_sound >= 50)
+                    running_sound = 0;
+
                 if (playerRect.width < 0)
                 {
                     playerRect.width = -playerRect.width;
@@ -155,6 +175,12 @@ PLAYER::PLAYER()
             {
                 if (playerRect.x >= 20)
                     playerRect.x -= playerSpeed;
+                //Sound system
+                if (IsKeyPressed(KEY_LEFT))
+                    PlaySound(Player_walking[running_sound]);
+                running_sound++;
+                if (running_sound >= 50)
+                    running_sound = 0;
                 if (playerRect.width > 0)
                 {
                     playerRect.width = -playerRect.width;
@@ -184,7 +210,7 @@ PLAYER::PLAYER()
         else {
             playerMoving = false;
         }
-
+       // StopSound(Current_sound[0]);
         if (IsKeyPressed(KEY_SPACE) && IsplayerOnGround) {
 
             if (playerRect.y >= 0)
@@ -216,6 +242,7 @@ PLAYER::PLAYER()
            // --player_health;
                 //If player fall on the ground the player died and start again
                 UnloadTexture(picture);
+                PlaySound(Player_falling);
                 reset();
 
 
@@ -324,6 +351,8 @@ PLAYER::PLAYER()
         else
         {
             DrawText("GAME OVER", GetScreenWidth()/2 -500, GetScreenHeight()/2, 150, RED);
+           // InitAudioDevice();
+            PlaySound(Game_over);
             return true;
         }
        
@@ -354,6 +383,7 @@ bool PLAYER::Player_collision_with_platform1s()
   }
 void PLAYER::reset()
 {
+   
     UnloadTexture(picture);
     if (player_health > 0)
     {

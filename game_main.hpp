@@ -43,10 +43,12 @@ public:
 	string Formating_score(int, int);
 	 void Check_high_score();
 
-	
-
+	//sound 
+	 void sounds();
+	 Sound Current_sound[6];
 private:
 	void InitGame();
+
 
 
 };

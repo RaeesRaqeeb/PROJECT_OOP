@@ -147,6 +147,8 @@
     <Image Include="bat.png" />
     <Image Include="bat_right.gif" />
     <Image Include="bat_left.gif" />
+    <Image Include="but.jpg" />
+    <Image Include="button.png" />
     <Image Include="coin.gif" />
     <Image Include="dragon.gif" />
     <Image Include="ghost.gif" />
@@ -166,6 +168,17 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="High_score.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\coins_collection.wav" />
+    <Media Include="Sounds\concrete-footsteps-6752.mp3" />
+    <Media Include="Sounds\Game_music.mp3" />
+    <Media Include="Sounds\Game_over.mp3" />
+    <Media Include="Sounds\kill_by_enemy.mp3" />
+    <Media Include="Sounds\player_fall_down.mp3" />
+    <Media Include="Sounds\Player_hit.mp3" />
+    <Media Include="Sounds\player_walking.mp3" />
+    <Media Include="Sounds\when_landing_from_jump.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

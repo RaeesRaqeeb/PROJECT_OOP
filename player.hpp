@@ -14,7 +14,11 @@ class PLAYER:public Base
 public:
     PLAYER();
     ~PLAYER();
-   
+    //sound
+    Sound Player_walking[50];
+    Sound Player_falling;
+    Sound Game_over;
+     int  running_sound;
     //Memebr variables or attributes for player
     Texture2D picture;
     Rectangle playerRect;
@@ -25,7 +29,7 @@ public:
     unsigned frameDelay;
     unsigned frameDelayCounter;
     bool playerMoving;
-    const float playerSpeed = 0.2f;
+    const float playerSpeed = 0.4f;
     float jumpSpeed;
     int jump_count_index_in_air;
 
