@@ -8,10 +8,7 @@ PLAYER::PLAYER()
     Player_walking[0] = LoadSound("Sounds/player_walking.mp3");
     Player_falling = LoadSound("Sounds/player_fall_down.mp3");
     Game_over = LoadSound("Sounds/Game_over.mp3");
-    //Current_sound[1] = LoadSound("Sounds/kill_by_enemy.mp3");
-    //Current_sound[2] = LoadSound("Sounds/player_fall_down.mp3");
-    //Current_sound[3] = LoadSound("Sounds/when_landing_from_jump.mp3");
-    //Current_sound[4] = LoadSound("Sounds/Game_over.mp3");
+
     running_sound = 0;
     for (int i = 0; i < 50; i++)
     {
@@ -268,78 +265,38 @@ PLAYER::PLAYER()
 
         }
        
-        //coins
-     
-      //  coins.Draw();
+    
         DrawTextureRec(enemy_picture, { float(enemy_frame_index * enemy_rect.width), 0, float(enemy_rect.width), float(enemy_picture.height) }, { enemy_rect.x,enemy_rect.y }, WHITE);
-      //  DrawTextureV(enemy_picture, { 200.0f,200.0f }, BLACK);
+ 
         DrawTextureRec(picture2, { 580, 350,float(picture2.width),(float)picture2.height },{580.0f,350.0f}, WHITE);
 
         //Sections Divider left middle 1
-        DrawRectangleRec(Big_Tiles_num[0], GRAY);
-
-        //Big Tile 2
-        DrawRectangleRec(Big_Tiles_num[1], GRAY);
-
-        //Big Tile 3
-        DrawRectangleRec(Big_Tiles_num[2], GRAY);
-
-        //Big Tile 4
-        DrawRectangleRec(Big_Tiles_num[3], GRAY);
-
-        //Big Tile 5
-        DrawRectangleRec(Big_Tiles_num[4], GRAY);
-
-        //Big Tile 6
-        DrawRectangleRec(Big_Tiles_num[5], GRAY);
-        //Sections 
-        //DrawRectangleRec({x,y,width,height},color);
-        DrawRectangleRec(Tiles_Number[0], GREEN);
-        DrawRectangleRec(Tiles_Number[1], GREEN);
-        DrawRectangleRec(Tiles_Number[2], GREEN);
-        DrawRectangleRec(Tiles_Number[3], GREEN);
-        DrawRectangleRec(Tiles_Number[4], GREEN);
-
-        //Left most tiles:
-        DrawRectangleRec(Tiles_Number[9], GREEN);
-        DrawRectangleRec(Tiles_Number[10], GREEN);
-        DrawRectangleRec(Tiles_Number[11], GREEN);
-        //Changing Path
-        DrawRectangleRec(Tiles_Number[5], GREEN);
-
-       // Path 2 Real one
-        DrawRectangleRec(Tiles_Number[6], GREEN);
-        DrawRectangleRec(Tiles_Number[8], GREEN);
-
-        //Path 1 in this we have to jump using walls
-        DrawRectangleRec(Tiles_Number[7], GREEN);
-    
-         //Middle tiles
-        DrawRectangleRec(Tiles_Number[12], GREEN);
-        DrawRectangleRec(Tiles_Number[13], GREEN);
-        DrawRectangleRec(Tiles_Number[14], GREEN);
-        DrawRectangleRec(Tiles_Number[15], GREEN);
-
-
-        //Right most tiles
-        DrawRectangleRec(Tiles_Number[16], GREEN);
-        DrawRectangleRec(Tiles_Number[17], GREEN);
-        DrawRectangleRec(Tiles_Number[18], GREEN);
-        DrawRectangleRec(Tiles_Number[19], GREEN);
-        DrawRectangleRec(Tiles_Number[20], GREEN);
-        DrawRectangleRec(Tiles_Number[21], GREEN);
+        //BIg Tiles 0 to 5
+        for (int i = 0; i < 6; i++)
+        {
+            DrawRectangleRec(Big_Tiles_num[i], GRAY);
+        }
+        
+        //Tiles Detail
+        //Starting tiles from 0 to 4
+        //Top left most tiles 9 to 11
+        // Middle chaning path from tile 5
+        //Middle tiles 12 to 15
+        //Right most tiles 16 to 21 
+        for (int i = 0; i < 22; i++)
+        {
+            DrawRectangleRec(Tiles_Number[i], GREEN);
+        }
 
         //Tile where enemy is walking
-        DrawRectangleRec(Enemy_tiles[0], RED);
-        DrawRectangleRec(Enemy_tiles[1], RED);
-        DrawRectangleRec(Enemy_tiles[2], RED);
-        DrawRectangleRec(Enemy_tiles[3], RED);
+        for(int i=0;i<4;i++)
+        DrawRectangleRec(Enemy_tiles[i], RED);
+ 
 
         //fake tiles
+        for(int i=0;i<4;i++)
         DrawRectangleRec(Fake_tiles[0], GREEN);
-        DrawRectangleRec(Fake_tiles[1], GREEN);
-        DrawRectangleRec(Fake_tiles[2], GREEN);
-        DrawRectangleRec(Fake_tiles[3], GREEN);
+      
      
   
         
@@ -351,7 +308,7 @@ PLAYER::PLAYER()
         else
         {
             DrawText("GAME OVER", GetScreenWidth()/2 -500, GetScreenHeight()/2, 150, RED);
-           // InitAudioDevice();
+         
             PlaySound(Game_over);
             return true;
         }
@@ -365,6 +322,23 @@ bool PLAYER::Player_collision_with_platform1s()
 {
 
     //We can use loop here also check this letter
+    for (int i = 0; i < 22; i++)
+    {
+        if( CheckCollisionRecs(playerCollisionRect, Tiles_Number[i])) return true;
+       
+    }
+    for(int i=0;i<6;i++)
+        if (CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[i])) return true;
+
+    for (int i = 0; i < 4; i++)
+        if (CheckCollisionRecs(playerCollisionRect, Enemy_tiles[i])) return true;
+
+    for (int i = 0; i < 4; i++)
+        if (CheckCollisionRecs(playerCollisionRect, Fake_tiles[i])) return false;
+
+    return false;
+/*
+* 
     return CheckCollisionRecs(playerCollisionRect, Tiles_Number[0]) ||
         CheckCollisionRecs(playerCollisionRect, Tiles_Number[1]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[2])
         || CheckCollisionRecs(playerCollisionRect, Tiles_Number[3]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[4])||
@@ -379,7 +353,7 @@ bool PLAYER::Player_collision_with_platform1s()
         CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[1])|| CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[2])||
         CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[3])|| CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[4])|| CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[5])
             || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[0]) || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[1]) 
-        || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[2])|| CheckCollisionRecs(playerCollisionRect, Enemy_tiles[3]);
+        || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[2])|| CheckCollisionRecs(playerCollisionRect, Enemy_tiles[3]);*/
   }
 void PLAYER::reset()
 {

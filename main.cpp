@@ -757,7 +757,7 @@ SKILTON_ENEMY::SKILTON_ENEMY()
    
     for (int i = 0; i < 5; i++)
     {
-        Enemy_rectangle[i].width = (float)Enemy_texture_left[i].width;
+        Enemy_rectangle[i].width = (float)Enemy_texture_left[i].width-50;
         Enemy_rectangle[i].height = (float)Enemy_texture_left[i].height;
     }
 
@@ -1069,13 +1069,13 @@ int main()
 
     // Define frame rectangle for drawing
     float frameHeight = (float)button.height;
-    Rectangle sourceRec = { (float)GetScreenWidth() / 2 - 100,(float) GetScreenHeight() / 2 - 100, (float)button.width, frameHeight };
+    Rectangle Button_rectangle = { (float)GetScreenWidth() / 2 - 100,(float) GetScreenHeight() / 2 - 100, (float)button.width/2, frameHeight/2 };
 
-    // Define button bounds on screen
-   // Rectangle btnBounds = { (float)GetScreenWidth() / 2 - 200, (float)GetScreenHeight() / 2 - 200, (float)button.width, frameHeight };
+   //Ending Rectangle
+    Rectangle Winning_rectangle = { 1700,900 ,100,100 };
 
-    int btnState = 0;               // Button state: 0-NORMAL, 1-MOUSE_HOVER, 2-PRESSED
-    bool btnAction = false;         // Button action should be activated
+    int btnState = 0;               
+    bool btnAction = false;       
  
     Vector2 mousePoint = { 0.0f, 0.0f };
 
@@ -1085,7 +1085,7 @@ int main()
     SKILTON_ENEMY Skilton_1;
     BAT_ENEMY Bat_1;
     bool endprogram = false;
-   
+    bool Win = false;
     bool paused = false;
     mousePoint = GetMousePosition();
     bool Start = false;
@@ -1099,14 +1099,14 @@ int main()
         // Check button state
         if (!btnAction)
         {
-            if (CheckCollisionPointRec(mousePoint, sourceRec))
+            if (CheckCollisionPointRec(mousePoint, Button_rectangle))
             {
 
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
                     btnAction = true;
                     UnloadTexture(button);
-                    sourceRec.x = 0;
-                    sourceRec.y = 0;
+                    Button_rectangle.x = 0;
+                    Button_rectangle.y = 0;
                 }
             }
 
@@ -1120,29 +1120,31 @@ int main()
 
         if (btnAction)
         {
-
-            if (!paused)
+            if (!Win)
             {
-                UpdateMusicStream(Game_music);
-                PlayMusicStream(Game_music);
+                if (!paused)
+                {
+                    UpdateMusicStream(Game_music);
+                    PlayMusicStream(Game_music);
 
-                Game_obj.HandleInput();
-
-
-                ClearBackground(BLACK);
-
-                Game_obj.Update();
-                Game_obj.CheckForCollisions();
-                Coin_obj.Update();
+                    Game_obj.HandleInput();
 
 
-                Bat_1.Update();
+                    ClearBackground(BLACK);
 
-                Bat_1.MoveMents();
+                    Game_obj.Update();
+                    Game_obj.CheckForCollisions();
+                    Coin_obj.Update();
 
-                Skilton_1.Update();
 
-                Skilton_1.MoveMents();
+                    Bat_1.Update();
+
+                    Bat_1.MoveMents();
+
+                    Skilton_1.Update();
+
+                    Skilton_1.MoveMents();
+                }
             }
         }
         BeginDrawing();
@@ -1271,8 +1273,19 @@ int main()
 
             if (!btnAction)
             {
-                DrawRectangle(GetScreenWidth() / 2 - 200, GetScreenHeight() / 2 - 200, 500, 600, WHITE);
+                DrawRectangle(GetScreenWidth() / 2 - 200, GetScreenHeight() / 2 - 200, 500, 600,GOLD);
+              //  DrawLine(GetScreenWidth() / 2 - 170, GetScreenHeight() / 2 - 200, GetScreenWidth() / 2 - 170, GetScreenHeight() / 2, BLACK);
+              DrawLineEx({ (float)GetScreenWidth() / 2 - 170, (float)GetScreenHeight() / 2 -200 }, { (float)GetScreenWidth() / 2 - 170, (float)GetScreenHeight() -100 }, 5.0f, BLACK);
+              DrawLineEx({ (float)GetScreenWidth()- 700, (float)GetScreenHeight()  - 900 }, { (float)GetScreenWidth() -700, (float)GetScreenHeight() - 100 }, 5.0f, BLACK);
+
                 DrawTexture(button, GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 100, WHITE);
+            }
+
+        //Winning collision check 
+            if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Winning_rectangle))
+            {
+                DrawText("VICTORY ! ", 400, 400, 250, YELLOW);
+                Win = true;
             }
             EndDrawing();
 
