@@ -1129,17 +1129,7 @@ int main()
     const int screenHeight = GetScreenWidth();
     raylib::Window window(screenWidth, screenHeight, "WINDOW");
    
- /*   raylib::Window window2(500, 800, "WINDOW");
-
-    while (!window2.ShouldClose())
-    {
-        BeginDrawing();
-
-
-        EndDrawing();
-
-    }*/
-
+ 
 
     COIN Coin_obj;
     GAME Game_obj;
