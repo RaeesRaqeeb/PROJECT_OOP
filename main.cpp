@@ -2,9 +2,68 @@
 #include <raylib.h>
 #include"game_main.hpp"
 #include<iostream>
+#include<string>
 //#include"enemy.hpp"
 
+
+
+
+
+using namespace std;
+
+static string Formating_score(int Score, int width)
+{
+    string Num_text = to_string(Score);
+    int leading_zeros = (int)width - (int)Num_text.length();
+
+    //in this we are concatenating the string also used string class constructor to repeatly add the 0 to string 
+    return Num_text = string(leading_zeros, '0') + Num_text;
+}
+static int High_score_load_from_File()
+{
+    int loaded_high_score = 0;
+    ifstream file("High_score.txt");
+
+    if (file.is_open())
+    {
+        file >> loaded_high_score;
+        file.close();
+    }
+    else
+    {
+        cout << "Error in loading from the file" << endl;
+    }
+
+    return loaded_high_score;
+}
+static void HighScore_Save_to_File(int highScore)
+{
+    ofstream file("High_score.txt");
+
+    if (file.is_open())
+    {
+        file << highScore;
+        file.close();
+    }
+    else
+    {
+        cout << "Faild to save score" << endl;
+    }
+}
+static int Score = 0;
+static int High_score = High_score_load_from_File();
+static void Check_for_high_score()
+{
+    if (Score > High_score)
+    {
+        High_score = Score;
+        HighScore_Save_to_File(High_score);
+    }
+}
+
 int num = 0;
+
+
 
 class Base_class
 {
@@ -1065,51 +1124,64 @@ void DRAGON_ENEMY::Update()
 
 int main()
 {
+ 
     const int screenWidth = GetScreenHeight();
     const int screenHeight = GetScreenWidth();
-
-
     raylib::Window window(screenWidth, screenHeight, "WINDOW");
+   
+ /*   raylib::Window window2(500, 800, "WINDOW");
 
+    while (!window2.ShouldClose())
+    {
+        BeginDrawing();
+
+
+        EndDrawing();
+
+    }*/
 
 
     COIN Coin_obj;
-
     GAME Game_obj;
 
     SKILTON_ENEMY Skilton_1;
     BAT_ENEMY Bat_1;
     bool endprogram = false;
-
+   
+    bool paused = false;
 
     while (!window.ShouldClose())
     {
+        if (IsKeyPressed(KEY_P))
+            paused = !paused;
+       
+        if (!paused)
+        {
+            Game_obj.HandleInput();
 
-        Game_obj.HandleInput();
+
+            ClearBackground(BLACK);
+
+            Game_obj.Update();
+            Game_obj.CheckForCollisions();
+            Coin_obj.Update();
 
 
-        ClearBackground(BLACK);
+            Bat_1.Update();
+
+            Bat_1.MoveMents();
+
+            Skilton_1.Update();
+
+            Skilton_1.MoveMents();
+        }
         BeginDrawing();
-
-        Game_obj.Update();
-        Game_obj.CheckForCollisions();
-        Coin_obj.Update();
-        Coin_obj.Draw();
-
-        Bat_1.Update();
-        Bat_1.Draw();
-        Bat_1.MoveMents();
-
-        Skilton_1.Update();
-        Skilton_1.Draw();
-        Skilton_1.MoveMents();
-
     
-
-
+        Coin_obj.Draw();
+        Bat_1.Draw();
+        Skilton_1.Draw();
         //Collision Detection Part
-
-
+      
         //Collision Of Player with Coins
         for (int i = 0; i < 50; i++)
         {
@@ -1117,6 +1189,8 @@ int main()
             {
                 // Collision detected with coin
                 //In the following lines in the loop, we are removing the frames and also the rectangle so when player stay their after collecting coin then the loop shouldn't run 
+                Score += 50;
+                Check_for_high_score();
                 Coin_obj.Coin_Texture[i].height = 0;
                 Coin_obj.Coin_Texture[i].width = 0;
                 Coin_obj.Coin_Rect[i].height = 0;
@@ -1135,8 +1209,6 @@ int main()
             if (CheckCollisionRecs(Game_obj.Player_obj.playerCollisionRect, Skilton_1.Enemy_rectangle[i]))
             {
 
-
-
                 // Get the difference in X and Y positions for collision direction
                 float deltaX = abs(Game_obj.Player_obj.playerCollisionRect.x - Skilton_1.Enemy_rectangle[i].x);
                 float deltaY = Game_obj.Player_obj.playerCollisionRect.y - Skilton_1.Enemy_rectangle[i].y;
@@ -1146,6 +1218,9 @@ int main()
                 if (deltaX < Game_obj.Player_obj.playerCollisionRect.width / 2.0f &&
                     deltaY < Skilton_1.Enemy_rectangle[i].height / 2.0f) {
                     // Player collided on top or slightly within enemy
+                    Score += 100;
+                    Check_for_high_score();
+
                     Skilton_1.enemy_Not_died[i] = false;
                     Skilton_1.Reset();
                 }
@@ -1168,8 +1243,27 @@ int main()
                 if (deltaX < Game_obj.Player_obj.playerCollisionRect.width / 2.0f &&
                     deltaY < Bat_1.Enemy_rectangle[i].height / 2.0f) {
                     // Player collided on top or slightly within enemy
+                    if (i == 0 || i == 1)
+                    {
+                        Score += 200;
+
+                    }
+                    if (i==2)
+                    {
+                        Score += 2000;
+
+                    }
+                    if (i == 3)
+                    {
+                        Score += 1000;
+                    }
+                    if (i == 4)
+                    {
+                        Score += 500;
+                    }
                     Bat_1.enemy_Not_died[i] = false;
                     Bat_1.Reset();
+                    Check_for_high_score();
                 }
 
                 else {
@@ -1179,14 +1273,24 @@ int main()
             }
         }
             endprogram = Game_obj.Draw();
-            if (endprogram == true)
-                break;
+          /*  if (endprogram == true)
+                break;*/
 
 
+            DrawTextEx(GetFontDefault(), "SCORE: ", { 1200,1000 }, 34, 2, YELLOW);
+            string Score_text = Formating_score(Score,5);
+            DrawTextEx(GetFontDefault(), Score_text.c_str(), { 1340,1000 }, 34, 2, YELLOW);
+
+            DrawTextEx(GetFontDefault(), "HIGH SCORE: ", { 1500,1000 }, 34, 2, YELLOW);
+            string Hight_score_text =Formating_score(High_score, 5);
+            DrawTextEx(GetFontDefault(), Hight_score_text.c_str(), { 1750,1000 }, 34, 2, YELLOW);
+
+            if(paused)
+               DrawText("PAUSED", GetScreenWidth() / 2, GetScreenHeight() / 2, 100, RED);
             EndDrawing();
 
         }
-
+    
         // Unload textures
 
         window.Close();

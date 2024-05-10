@@ -1,5 +1,10 @@
 #pragma once
 #include"player.hpp"
+#include<string>
+#include<fstream>
+#include<iostream>
+
+using namespace std;
 
 class GAME
 {
@@ -35,18 +40,13 @@ public:
 	PLAYER Player_obj;
 	void CheckForCollisions();
 	void Reset();
+	string Formating_score(int, int);
+	 void Check_high_score();
 
 	
 
 private:
-	
-	void MoveEnemy();
-
 	void InitGame();
-	void CheckForHighscore();
-	void GameOver();
-	
-	void checkForHighscore();
-	void saveHighscoreToFile(int highscore);
-	int loadHighscoreFromFile();
+
+
 };

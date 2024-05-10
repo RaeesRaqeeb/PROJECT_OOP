@@ -1,6 +1,6 @@
 #include "game_main.hpp"
 #include"enemy.hpp"
-
+#include<fstream>
 
 GAME::GAME()
 {
@@ -94,7 +94,16 @@ void GAME::Reset()
 
 }
 
+
+
+
+
+
+
+
 void GAME::InitGame()
 {
-	IsPlayerMoving = true;
+    IsPlayerMoving = true;
+
+  
 }

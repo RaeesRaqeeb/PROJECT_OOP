@@ -43,6 +43,9 @@ public:
     int direction;
     int enemy_frame_index;
 
+    //lives 
+    Texture2D lives[3];
+    Vector2 positions[3];
 
 
     //World related variable
@@ -85,7 +88,7 @@ public:
 
 
     int GetHealth() const { return player_health; }
-    int GetScore() const { return score; }
+
 
 private:
     // Private attributes

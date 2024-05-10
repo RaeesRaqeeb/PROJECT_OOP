@@ -21,9 +21,6 @@
     <ClCompile Include="player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="game_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -71,12 +68,12 @@
     <Image Include="skilton_right.gif">
       <Filter>Source Files</Filter>
     </Image>
+    <Image Include="lives.png">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="player.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game_main.hpp">
@@ -88,5 +85,10 @@
     <ClInclude Include="Base_class.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="High_score.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

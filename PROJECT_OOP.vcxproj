@@ -138,7 +138,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="coins.cpp" />
-    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game_main.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
@@ -151,6 +150,7 @@
     <Image Include="coin.gif" />
     <Image Include="dragon.gif" />
     <Image Include="ghost.gif" />
+    <Image Include="lives.png" />
     <Image Include="scarfy.png" />
     <Image Include="skilton.png" />
     <Image Include="skilton_left.gif" />
@@ -161,9 +161,11 @@
   <ItemGroup>
     <ClInclude Include="Base_class.hpp" />
     <ClInclude Include="coins.hpp" />
-    <ClInclude Include="enemy.hpp" />
     <ClInclude Include="game_main.hpp" />
     <ClInclude Include="player.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="High_score.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

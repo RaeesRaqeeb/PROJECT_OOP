@@ -4,8 +4,18 @@
 
 PLAYER::PLAYER()
 {
-    //Camera
+    //lives
+    for(int i=0;i<3;i++)
+      lives[i] = LoadTexture("lives.png");
     
+    positions[0].x = 1030.0f;
+    positions[0].y = GetScreenHeight()-100.0f;
+    positions[1].x = 1080.0f;
+    positions[1].y = GetScreenHeight() - 100.0f;
+    positions[2].x = 1130.0f;
+    positions[2].y = GetScreenHeight() - 100.0f;
+
+
     //coins
    
     //Player
@@ -221,7 +231,18 @@ PLAYER::PLAYER()
 
     bool PLAYER::Draw(bool IsPlayerMoving)
     {
+        //Live icons
+     
+          
+        if (player_health != 0)
+        {
+            for(int i=0;i<player_health; i++)
+            DrawTextureV(lives[i],positions[i], WHITE);
+
+        }
+       
         //coins
+     
       //  coins.Draw();
         DrawTextureRec(enemy_picture, { float(enemy_frame_index * enemy_rect.width), 0, float(enemy_rect.width), float(enemy_picture.height) }, { enemy_rect.x,enemy_rect.y }, WHITE);
       //  DrawTextureV(enemy_picture, { 200.0f,200.0f }, BLACK);
@@ -293,10 +314,7 @@ PLAYER::PLAYER()
         DrawRectangleRec(Fake_tiles[2], GREEN);
         DrawRectangleRec(Fake_tiles[3], GREEN);
      
-      /*  DrawRectangleRec({ 880,300,50,5 }, GREEN);
-        DrawRectangleRec({ 980,150,50,5 }, GREEN);
-        DrawRectangleRec({ 0,5,800,5}, GREEN);*/
-        
+  
         
         //Draw player
         if (player_health > 0)
@@ -305,7 +323,7 @@ PLAYER::PLAYER()
 
         else
         {
-            DrawText("GAME OVER", 200, 200, 50, GREEN);
+            DrawText("GAME OVER", GetScreenWidth()/2 -500, GetScreenHeight()/2, 150, RED);
             return true;
         }
        
@@ -316,6 +334,8 @@ PLAYER::PLAYER()
 
 bool PLAYER::Player_collision_with_platform1s()
 {
+
+    //We can use loop here also check this letter
     return CheckCollisionRecs(playerCollisionRect, Tiles_Number[0]) ||
         CheckCollisionRecs(playerCollisionRect, Tiles_Number[1]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[2])
         || CheckCollisionRecs(playerCollisionRect, Tiles_Number[3]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[4])||
