@@ -113,5 +113,8 @@
     <Image Include="Pictures\scarfy.png">
       <Filter>Pictures</Filter>
     </Image>
+    <Image Include="Class_Diagram.jpg">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -165,6 +165,7 @@
     <ClInclude Include="Header_Files\player.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Class_Diagram.jpg" />
     <Image Include="Pictures\bat_left.gif" />
     <Image Include="Pictures\bat_right.gif" />
     <Image Include="Pictures\button.png" />

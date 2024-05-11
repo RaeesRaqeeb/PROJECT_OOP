@@ -63,7 +63,7 @@ private:
 
     //Tiles
     float ground_level;
-    Rectangle Tiles_Number[100];
+    Rectangle Tiles_Number[22];
     Rectangle Fake_tiles[10];
     Rectangle Big_Tiles_num[10];
     Rectangle Enemy_tiles[5];
