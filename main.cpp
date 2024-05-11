@@ -227,6 +227,10 @@ int main()
                     Skilton_1.Reset();
                 }
 
+
+
+
+
                 else 
                 {
                     PlaySound(*Ptr[1]);
