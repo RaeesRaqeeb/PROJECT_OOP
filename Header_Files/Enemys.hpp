@@ -1,3 +1,4 @@
+#pragma once
 #include<raylib.h>
 #include"Header_files/player.hpp"
 #include"Header_files/Base_class.hpp"

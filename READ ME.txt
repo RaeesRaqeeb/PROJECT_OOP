@@ -1,0 +1,16 @@
+PROJECT NAME: AMONG DEATHs
+CODER: RAQEEB & FATIMA KHAN
+PURPOSE: Purpose of the code is to learn and impliment to basic oop concepts 
+Following OOP Concepts are used in this project:
+1)Inheritance
+2)Encapsulation
+3)Abstraction
+4)Polymorphism
+ 
+
+Link of the Youtube Video 
+https://www.youtube.com/watch?v=_MRktyQH_Bk
+
+GitHub Repo Link
+https://github.com/RaeesRaqeeb/PROJECT_OOP
+

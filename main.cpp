@@ -1,3 +1,18 @@
+//PROJECT NAME: AMONG DEATH
+//CODER: RAQEEB & FATIMA KHAN
+//PURPOSE: Purpose of the code is to learn and impliment the basic oop concepts 
+//Following OOP Concepts are used in this project:
+//1)Inheritance
+// 2)Encapsulation
+// 3)Abstraction
+// 4)Polymorphism
+ 
+
+//This is a simple game in which you have to collect coins and kill the enemy to get points and reach the end to win. 
+
+//Note: To run this code you need Raylib library path configuration.
+
+
 #include <raylib.h>
 #include<iostream>
 #include<fstream>
@@ -99,7 +114,6 @@ int main()
     //Objects of Class 
     COIN Coin_obj;
     PLAYER Player_obj;
-  //  GAME Game_obj;
     SKILTON_ENEMY Skilton_1;
     BAT_ENEMY Bat_1;
 
@@ -173,6 +187,7 @@ int main()
         }
 
         //Game Displaying and Drawing the Frames and Objects
+
         BeginDrawing();
         Player_obj.Draw();
         Coin_obj.Draw();
