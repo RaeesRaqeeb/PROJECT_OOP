@@ -2,12 +2,13 @@
 #include<time.h>
 #include<iostream>
 
+//Player class Constructor
 PLAYER::PLAYER()
 {
     //SOunds
     Player_walking[0] = LoadSound("Sounds/player_walking.mp3");
     Player_falling = LoadSound("Sounds/player_fall_down.mp3");
-    Game_over = LoadSound("Sounds/Game_over.mp3");
+   
 
     running_sound = 0;
     for (int i = 0; i < 50; i++)
@@ -18,6 +19,7 @@ PLAYER::PLAYER()
     for(int i=0;i<3;i++)
       lives[i] = LoadTexture("Pictures/lives.png");
     
+    //Setting the position of player lives on the screen
     positions[0].x = 1030.0f;
     positions[0].y = GetScreenHeight()-100.0f;
     positions[1].x = 1080.0f;
@@ -26,9 +28,9 @@ PLAYER::PLAYER()
     positions[2].y = GetScreenHeight() - 100.0f;
 
 
-    //coins
    
-    //Player
+    //Player Attributes
+    IsPlayer_moving = false;
     player_health = 3;
     jump_count_index_in_air = 0;
     jumpSpeed = 10.0f;
@@ -39,7 +41,7 @@ PLAYER::PLAYER()
     frameDelayCounter = 0;
     playerMoving = false;
     picture = LoadTexture("Pictures/scarfy.png");
-    playerRect = { 0, 900, float(picture.width / 6), float(picture.height) };
+    playerRect = { 0, 950, float(picture.width / 6), float(picture.height) };
     playerCollisionRect = { playerRect.x, playerRect.y, playerRect.width, playerRect.height };
     
     
@@ -106,57 +108,58 @@ PLAYER::PLAYER()
     //world related 
     ground_level = GetScreenHeight() - playerRect.height;
 
-    //Enemy
-    enemy_picture = LoadTexture("enemy2.png");
-    enemy_frames = 3;
-    enemy_rect = { 0.0f, 100.0f,(float)enemy_picture.width / enemy_frames,(float)enemy_picture.height };
-
-    enemy_frame_index = 0;
-    direction = 1;
+   
 }
+
     PLAYER::~PLAYER()
     {
         UnloadTexture(picture);
-        UnloadTexture(picture2);
-        
-    }
+        UnloadSound(Player_falling);
+            for(int i=0;i<51;i++)
+        UnloadSound(Player_walking[i]);
+       }
 
+    //Function for Player Movement control
     void PLAYER::Player_Movement()
     {
         //when Collide with screen player should stop
         previousPosition.x = playerRect.x;
         previousPosition.y = playerRect.y;
 
-        if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_DOWN))
+        //If any of the two button is pressed the it means player is moving
+        if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_DOWN))
         {
             playerMoving = true;
-
-            if (playerRect.x <= obstacleRect.x || playerRect.x >= (obstacleRect.x + obstacleRect.width))
-            {
-                IsplayerOnGround = false;
-            }
+            IsplayerOnGround = false;
+            
             if (IsKeyDown(KEY_RIGHT))
             {
+                //To insure player don't go out of screen
                 if (playerRect.x < GetScreenWidth() - 85)
                     playerRect.x += playerSpeed;
-                //Sound system
+
+                //Foot sound
                 if(IsKeyPressed(KEY_RIGHT))
                     PlaySound(Player_walking[running_sound]);
                 running_sound++;
                 if (running_sound >= 50)
                     running_sound = 0;
 
+                //For changing the direction of player frames
                 if (playerRect.width < 0)
                 {
                     playerRect.width = -playerRect.width;
                 }
+
+                //For Jump when pressed space
                 if (IsKeyReleased(KEY_SPACE))
                 {
                     if (jump_count_index_in_air != 2)
                     {
                         if (playerRect.y >= 0)
                         {
-                            jumpSpeed = 1.0f; // Set the initial jump velocity
+                            // Set the initial jump velocity
+                            jumpSpeed = 1.0f; 
                             IsplayerOnGround = false;
                         }
                         jump_count_index_in_air++;
@@ -168,6 +171,7 @@ PLAYER::PLAYER()
                     }
                 }
             }
+            //Same as the Right movement
             if (IsKeyDown(KEY_LEFT))
             {
                 if (playerRect.x >= 20)
@@ -204,15 +208,16 @@ PLAYER::PLAYER()
             }
 
         }
-        else {
+        else
+        {
             playerMoving = false;
         }
-       // StopSound(Current_sound[0]);
+      
         if (IsKeyPressed(KEY_SPACE) && IsplayerOnGround) {
 
             if (playerRect.y >= 0)
             {
-                jumpSpeed = 1.0f; // Set the initial jump velocity
+                jumpSpeed = 1.0f;
                 IsplayerOnGround = false;
             }
         }
@@ -236,11 +241,10 @@ PLAYER::PLAYER()
                 IsplayerOnGround = true;
                 jump_count_index_in_air = 0;
                 jumpSpeed = 1.0f; // Reset jump speed
-           // --player_health;
+        
                 //If player fall on the ground the player died and start again
-                UnloadTexture(picture);
+                Reset();
                 PlaySound(Player_falling);
-                reset();
 
 
             }
@@ -253,11 +257,9 @@ PLAYER::PLAYER()
 
     }
 
-    bool PLAYER::Draw(bool IsPlayerMoving)
+    bool PLAYER::Draw()
     {
-        //Live icons
-     
-          
+        //Live icon
         if (player_health != 0)
         {
             for(int i=0;i<player_health; i++)
@@ -265,10 +267,9 @@ PLAYER::PLAYER()
 
         }
        
-    
-        DrawTextureRec(enemy_picture, { float(enemy_frame_index * enemy_rect.width), 0, float(enemy_rect.width), float(enemy_picture.height) }, { enemy_rect.x,enemy_rect.y }, WHITE);
+
  
-        DrawTextureRec(picture2, { 580, 350,float(picture2.width),(float)picture2.height },{580.0f,350.0f}, WHITE);
+  
 
         //Sections Divider left middle 1
         //BIg Tiles 0 to 5
@@ -301,7 +302,7 @@ PLAYER::PLAYER()
   
         
         //Draw player
-        if (player_health > 0)
+        if (GetHealth())
             DrawTextureRec(picture, { float(frameIndex * playerRect.width), 0, float(playerRect.width), float(picture.height) },
                 { float(playerRect.x), float(playerRect.y) }, WHITE);
 
@@ -309,7 +310,6 @@ PLAYER::PLAYER()
         {
             DrawText("GAME OVER", GetScreenWidth()/2 -500, GetScreenHeight()/2, 150, RED);
          
-            PlaySound(Game_over);
             return true;
         }
        
@@ -318,67 +318,84 @@ PLAYER::PLAYER()
     }
     
 
-bool PLAYER::Player_collision_with_platform1s()
-{
-
-    //We can use loop here also check this letter
-    for (int i = 0; i < 22; i++)
+    bool PLAYER::Player_collision_with_platform1s()
     {
-        if( CheckCollisionRecs(playerCollisionRect, Tiles_Number[i])) return true;
-       
-    }
-    for(int i=0;i<6;i++)
-        if (CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[i])) return true;
 
-    for (int i = 0; i < 4; i++)
-        if (CheckCollisionRecs(playerCollisionRect, Enemy_tiles[i])) return true;
+        //We can use loop here also check this letter
+        for (int i = 0; i < 22; i++)
+        {
+            if (CheckCollisionRecs(playerCollisionRect, Tiles_Number[i]))
+            {
+                playerRect.y = previousPosition.y;
+                playerRect.x = previousPosition.x;
+                IsplayerOnGround = true;
 
-    for (int i = 0; i < 4; i++)
-        if (CheckCollisionRecs(playerCollisionRect, Fake_tiles[i])) return false;
+                jumpSpeed = 0.0f;
+                // Reset jump speed if collided
+                jump_count_index_in_air = 0;
+                return true;
 
-    return false;
-/*
-* 
-    return CheckCollisionRecs(playerCollisionRect, Tiles_Number[0]) ||
-        CheckCollisionRecs(playerCollisionRect, Tiles_Number[1]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[2])
-        || CheckCollisionRecs(playerCollisionRect, Tiles_Number[3]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[4])||
-        CheckCollisionRecs(playerCollisionRect, Tiles_Number[5])||CheckCollisionRecs(playerCollisionRect,Tiles_Number[6])||CheckCollisionRecs(playerCollisionRect,Tiles_Number[7])
-        || CheckCollisionRecs(playerCollisionRect, Tiles_Number[8])|| CheckCollisionRecs(playerCollisionRect, Tiles_Number[9])
-        || CheckCollisionRecs(playerCollisionRect, Tiles_Number[10]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[11]) 
-        || CheckCollisionRecs(playerCollisionRect, Tiles_Number[12]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[13])||
-        CheckCollisionRecs(playerCollisionRect, Tiles_Number[14])|| CheckCollisionRecs(playerCollisionRect, Tiles_Number[15]) ||
-        CheckCollisionRecs(playerCollisionRect, Tiles_Number[16])|| CheckCollisionRecs(playerCollisionRect, Tiles_Number[17]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[18])
-       || CheckCollisionRecs(playerCollisionRect, Tiles_Number[19]) || CheckCollisionRecs(playerCollisionRect, Tiles_Number[20])|| CheckCollisionRecs(playerCollisionRect, Tiles_Number[21])
-        ||  CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[0]) ||
-        CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[1])|| CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[2])||
-        CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[3])|| CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[4])|| CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[5])
-            || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[0]) || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[1]) 
-        || CheckCollisionRecs(playerCollisionRect, Enemy_tiles[2])|| CheckCollisionRecs(playerCollisionRect, Enemy_tiles[3]);*/
-  }
-void PLAYER::reset()
+            }
+        }
+        for (int i = 0; i < 6; i++)
+        {
+            if (CheckCollisionRecs(playerCollisionRect, Big_Tiles_num[i]))
+            {
+                playerRect.y = previousPosition.y;
+                playerRect.x = previousPosition.x;
+                IsplayerOnGround = true;
+
+                jumpSpeed = 0.0f;
+                // Reset jump speed if collided
+                jump_count_index_in_air = 0;
+                return true;
+            }
+        }
+
+        for (int i = 0; i < 4; i++)
+
+        {
+            if (CheckCollisionRecs(playerCollisionRect, Enemy_tiles[i]))
+            {
+                playerRect.y = previousPosition.y;
+                playerRect.x = previousPosition.x;
+                IsplayerOnGround = true;
+
+                jumpSpeed = 0.0f;
+                // Reset jump speed if collided
+                jump_count_index_in_air = 0;
+                return true;
+            }
+        }
+
+            return false;
+
+        }
+    
+//This function reset the player to its initial position
+void PLAYER::Reset()
 {
    
     UnloadTexture(picture);
-    if (player_health > 0)
+    if (IsAlive())
     {
         --player_health;
-        picture = LoadTexture("scarfy.png");
-        DrawTextureRec(picture, playerRect, { 0.0f,850.0f }, BLACK);
+        picture = LoadTexture("Pictures/scarfy.png");
+        DrawTextureRec(picture, playerRect, { 0.0f,900.0f }, BLACK);
         playerRect = { 0.0f, 850.0f, float(picture.width / 6) - 2, float(picture.height) };
         playerCollisionRect = { playerRect.x, playerRect.y, playerRect.width, playerRect.height };
     }
 }
+
+//Use to update player frames as it moves
 void PLAYER::Update()
 {
-    //coins update
-   // coins.Update();
- //Calculation for changing the frames
+ 
     ++frameDelayCounter;
     if (frameDelayCounter >= frameDelay)
         {
         frameDelayCounter = 0;
-      //  ++enemy_frame_index;
-          //  enemy_frame_index %= enemy_frames;
+    
         if (playerMoving)
         {
             ++frameIndex;
@@ -390,32 +407,7 @@ void PLAYER::Update()
    
 }
 
-
-void PLAYER::Enemy_movement()
-{
-    if (enemy_rect.x <= GetScreenWidth()-enemy_rect.width)
-    {
-        enemy_rect.x += 0.3f;
-        if (enemy_rect.width > 0)
-        {
-            enemy_rect.width = -enemy_rect.width;
-           }
-    }
-     else if(enemy_rect.x>=0)
-    {
-        if (enemy_rect.width < 0)
-        {
-            enemy_rect.width = -enemy_rect.width;
-        }
-        while (enemy_rect.x > 0.0f)
-        {
-            enemy_rect.x -= 1.0f;
-        }
-       
-    }
-
-}
-
+//This function is used to get the player rectangle
 Rectangle PLAYER::player_GetRect()
 {
     return playerRect;

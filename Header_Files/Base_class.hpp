@@ -1,13 +1,13 @@
 #pragma once
-#include<raylib.h>
 
-
-class BASE_FUNCTION
+//THis is baase class from which functions are overrided 
+class Base_class
 {
 public:
-
-	virtual void Draw() = 0;
-	virtual void Update() = 0;
-	virtual void Movement() = 0;
-
+    virtual ~Base_class();
+    virtual void Draw()=0;
+    virtual void Update()=0;
+    virtual void MoveMents()=0;
+    virtual void Reset()=0;
+    
 };

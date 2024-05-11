@@ -137,8 +137,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Base_Class.cpp" />
     <ClCompile Include="coins.cpp" />
-    <ClCompile Include="game_main.cpp" />
+    <ClCompile Include="Enemys.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
   </ItemGroup>
@@ -154,12 +155,13 @@
     <Media Include="Sounds\player_fall_down.mp3" />
     <Media Include="Sounds\Player_hit.mp3" />
     <Media Include="Sounds\player_walking.mp3" />
+    <Media Include="Sounds\Victory.mp3" />
     <Media Include="Sounds\when_landing_from_jump.mp3" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header_Files\Base_class.hpp" />
     <ClInclude Include="Header_Files\coins.hpp" />
-    <ClInclude Include="Header_Files\game_main.hpp" />
+    <ClInclude Include="Header_Files\Enemys.hpp" />
     <ClInclude Include="Header_Files\player.hpp" />
   </ItemGroup>
   <ItemGroup>

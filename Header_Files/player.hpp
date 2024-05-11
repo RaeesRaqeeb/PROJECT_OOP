@@ -1,28 +1,55 @@
+#pragma once
 #include<raylib.h>
 #include<raylib-cpp.hpp>
+#include"Header_files/Base_class.hpp"
 
-class Base
-{
-public:
-    void Draw();
-    void Update();
-
-};
 //Player class 
-class PLAYER:public Base 
+class PLAYER
 {
 public:
     PLAYER();
     ~PLAYER();
-    //sound
-    Sound Player_walking[50];
-    Sound Player_falling;
-    Sound Game_over;
-     int  running_sound;
+ 
+
     //Memebr variables or attributes for player
-    Texture2D picture;
+    
     Rectangle playerRect;
     Rectangle playerCollisionRect;
+    //lives 
+    Texture2D lives[3];
+    Vector2 positions[3];
+
+
+    //World related variable
+  
+
+    // Public member functions
+    void Player_Movement();
+    bool Draw();
+    bool Player_collision_with_platform1s();
+    void Reset() ;
+    void Update() ;
+
+
+
+
+    Vector2 previousPosition;
+   
+ 
+    bool firstFrame = true;
+   
+    Texture2D picture;
+    int player_health;
+    //Functions Making for managing 
+    Rectangle player_GetRect();
+
+
+    int GetHealth() const { return player_health; }
+
+
+private:
+    // Private attributes
+    
     bool IsplayerOnGround;
     unsigned frameIndex;
     unsigned numFrames;
@@ -32,76 +59,21 @@ public:
     const float playerSpeed = 0.4f;
     float jumpSpeed;
     int jump_count_index_in_air;
+    bool IsPlayer_moving;
 
-    //Member variable for obstacles
-    Texture2D picture2;
-    Rectangle obstacleRect;
-
-    //coins
- //   SMALL_COIN coins;
-
-    //Enemy
-    Texture2D enemy_picture;
-    Rectangle enemy_rect;
-    int enemy_frames;
-    int direction;
-    int enemy_frame_index;
-
-    //lives 
-    Texture2D lives[3];
-    Vector2 positions[3];
-
-
-    //World related variable
-    float ground_level;
-    Vector2 Title_position;
-
-    // Public member functions
-    void Player_Movement();
-    void TakeDamage(int damageAmount);
-    void IncreaseScore(int points);
-    bool Draw(bool IsPlayerMoving);
-    void TILES_DRAW();
-    bool Player_collision_with_platform1s();
-    void reset();
-    void Update();
-    void Enemy_movement();
-
-
-
-    Vector2 previousPosition;
-   
     //Tiles
-    bool platformsDrawn;
-    int numTiles;
+    float ground_level;
     Rectangle Tiles_Number[100];
     Rectangle Fake_tiles[10];
     Rectangle Big_Tiles_num[10];
     Rectangle Enemy_tiles[5];
-    float minTileDistance;
-    float maxTileDistance;
-    int totalWidth;
-    float averageDistance;
-    bool firstFrame = true;
-    int once = 0;
-    //Rectangle originalplatform1Position[10];
-    
-    //Functions Making for managing 
-    Rectangle player_GetRect();
-
-
-
-    int GetHealth() const { return player_health; }
-
-
-private:
-    // Private attributes
-    int player_health;
-    int score;
-    int positionX;
-    int positionY;
-
     // Private helper functions
     bool IsAlive() const { return player_health > 0; }
+
+    //sound
+    Sound Player_walking[50];
+    Sound Player_falling;
+
+    int  running_sound;
 };
 
