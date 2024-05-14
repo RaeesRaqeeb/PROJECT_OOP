@@ -1,4 +1,7 @@
-To run this code You have to first set the configurtion for Raylib in you PC. You can use different IDE. I prefer Visual Studio Community 2022. 
+To run this code You have to first set the configurtion for Raylib in you PC. You can use different IDE. I prefer Visual Studio Community 2022. These youtube video will help you to set raylib in VS :
+https://www.youtube.com/shorts/q0gxwjBSmX4 
+https://www.youtube.com/watch?v=ZZV4VrAasEQ
+
 Youtube Video of Output:
 https://youtu.be/_MRktyQH_Bk 
 
